@@ -7,7 +7,8 @@ const routes: Routes = [
   {
     path: '',
     component: LoginPage
-  }
+  },
+  { path: 'login', component: LoginPage }, // Ruta para la página de login
 ];
 
 @NgModule({
