@@ -1,6 +1,7 @@
 import { Role } from "./role";
 
 export interface Usuario{
+
     rut: string;
     nombre: string;
     correo: string;

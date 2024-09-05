@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AutentificacionService } from 'src/app/services/autentificacion/autentificacion.service';
+import { AutentificacionService } from 'src/app/service/autentificacion/autentificacion.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
   login(username: string, password: string){
     if(this._authService.autentificacion(username, password)){
       console.info("Usuario Existe")
-      this.router.navigate(['dashboard'], {
+      this.router.navigate(['home'], {
         state: {
           usuario: username
         }
