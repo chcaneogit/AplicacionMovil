@@ -1,15 +1,27 @@
+#container {
+  text-align: center;
 
-.container-1 {
-  // background-color: #e0f7fa; /* Fondo azul claro */
-    border: 1px solid #b2ebf2; /* Borde azul más claro */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 10px 16px; /* Espacio interno */
-    margin: 16px 16PX; /* Margen superior e inferior */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-h4, .ubi{
-  display: flex; /* Usa flexbox para centrar el contenido */
-  justify-content: center; /* Centra horizontalmente el botón */
-  margin-top: 20px; /* Añade margen superior si es necesario */
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
 }
