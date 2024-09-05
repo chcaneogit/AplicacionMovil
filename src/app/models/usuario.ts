@@ -1,13 +1,10 @@
 import { Role } from "./role";
 
-import interface Usuario{
-    id: number;
+export interface Usuario{
+    rut: string;
     nombre: string;
-    username: string;
+    correo: string;
     password: string;
     role: Role[]
-
-    apellido: string;
-    email: string;
-    edad: number;
+    fecha_nacimiento: string;
 }
