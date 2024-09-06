@@ -1,19 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutentificacionService } from './service/autentificacion/autentificacion.service';
+import { UsuariosService } from './service/usuarios/usuarios.service';
+import { Usuario } from './models/usuario';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
-  constructor(private router: Router) {}
+export class AppComponent implements OnInit {
 
-  irLogin() {
-    this.router.navigate(['/login']) //Redirige a la página LOGIN
+  constructor(
+    private _authService: AutentificacionService,
+    private router: Router,
+    private _usuarioService: UsuariosService
+  ) {}
+
+  ngOnInit() {
+    // Verifica el estado de autenticación al iniciar
+    this.actualizarEstadoMenu();
+  }
+
+  actualizarEstadoMenu() {
+    // Este método puede incluir lógica adicional si es necesario
+  }
+
+  estaAutenticado(): boolean {
+    return this._authService.estaAutenticado();
   }
 
   irHome() {
-    this.router.navigate(['/home']) //Redirige a la página HOME
+    this.router.navigate(['/home']);
+  }
+
+  irLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  irPerfil() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  cerrarSesion() {
+    this._authService.cerrarSesion();
+    this.router.navigate(['/login']);
   }
 }

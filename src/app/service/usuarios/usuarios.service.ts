@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/usuario';
   providedIn: 'root'
 })
 export class UsuariosService {
+  [x: string]: any;
 
   private lista_de_usuarios: Usuario[] = [
     {
@@ -16,7 +17,7 @@ export class UsuariosService {
       role: [
         { id: 1, nombre: "cliente" }
       ],
-   
+
     },
     {
       rut: '11111-2',
@@ -27,7 +28,7 @@ export class UsuariosService {
       role: [
         { id: 2, nombre: "administrador" }
       ],
-   
+
     },
     {
       rut: '11111-1',
@@ -38,10 +39,10 @@ export class UsuariosService {
       role: [
         { id: 1, nombre: "cliente" }
       ],
-   
+
     },
   ];
-  
+
   constructor() { }
 
   public obtener_lista_usuarios(): Usuario[]{

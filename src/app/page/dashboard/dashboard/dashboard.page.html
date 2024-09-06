@@ -1,79 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>FindCar</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Perfil de Usuario</ion-card-title>
-    </ion-card-header>
+<ion-item>
+  <ion-label>Nombre:</ion-label>
+  <ion-text>{{usuario?.nombre}}</ion-text>
+</ion-item>
 
-    <ion-card-content>
-      <ion-list>
+<ion-item>
+  <ion-label>Username:</ion-label>
+  <ion-text>{{usuario?.correo}}</ion-text>
+</ion-item>
 
-        <ion-item>
-          <ion-label>Nombre:</ion-label>
-          <ion-text>{{usuario?.nombre}}</ion-text>
-        </ion-item>
+<ion-item>
+  <ion-label>Email:</ion-label>
+  <ion-text>{{usuario?.correo}}</ion-text>
+</ion-item>
 
-        <ion-item>
-          <ion-label>Username:</ion-label>
-          <ion-text>{{usuario?.correo}}</ion-text>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Email:</ion-label>
-          <ion-text>{{usuario?.correo}}</ion-text>
-        </ion-item>
-
-        <ion-item>
-          <ion-label>Edad:</ion-label>
-          <ion-text>{{usuario?.edad}}</ion-text>
-        </ion-item>
-
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Roles</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-
-      <ion-item>
-        <ion-list>
-          <ion-item *ngFor="let role of usuario?.role">
-            <ion-text>{{role.nombre}}</ion-text>
-          </ion-item>
-        </ion-list>
-      </ion-item>
-
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Rol</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-
-      <ion-item>
-        <ion-list>
-          <ion-item *ngFor="let role of usuario?.role">
-            <ion-text>{{role.nombre}}</ion-text>
-          </ion-item>
-        </ion-list>
-      </ion-item>
-
-    </ion-card-content>
-  </ion-card>
-
-
-
-  <ion-button expand="block" routerLink="/lista-productos">Ir a la Lista</ion-button>
-  <ion-button *ngIf="obtenerAdministrador()" expand="block" routerLink="/crear-producto">Crear Producto</ion-button>
-
-</ion-content>

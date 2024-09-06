@@ -1,2 +1,18 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+/* src/theme/variables.scss */
+
+/* Colores personalizados */
+:root {
+  --ion-background-color: #F0F0F0; /* Color de fondo general de la aplicación */
+  --ion-card-background: #FFFFFF; /* Color de fondo para los contenedores (tarjetas, secciones) */
+  --ion-toolbar-background: #1ab5c0; /* Color de fondo para encabezados o áreas importantes */
+  --ion-color-primary: #1976D2; /* Color principal, usado también para botones de acción */
+  --ion-color-primary-contrast: #FFFFFF; /* Color de contraste para textos en el color principal */
+  --ion-menu-background: #424242; /* Color de fondo para el menú lateral */
+  --ion-text-color: #333333; /* Color de texto general */
+}
+
+h4, .ubi{
+  display: flex; /* Usa flexbox para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente el botón */
+  margin-top: 20px; /* Añade margen superior si es necesario */
+}
