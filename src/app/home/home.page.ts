@@ -11,8 +11,6 @@ export class HomePage {
 
   constructor(private router: Router) {}
 
-  irLogin() {
-    this.router.navigate(['/login']) //Redirige a la página LOGIN
-  }
+  
 
 }

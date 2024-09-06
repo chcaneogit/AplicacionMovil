@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/usuario';
-import { UsuariosService } from 'src/app/services/usuarios/usuarios.service';
+import { UsuariosService } from 'src/app/service/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
 })
-
 export class DashboardPage implements OnInit {
 
   usuario: Usuario | undefined;
@@ -26,7 +25,5 @@ export class DashboardPage implements OnInit {
     const esAdministrador = this.usuario?.role.some(rol => rol.nombre == 'administrador');
     return esAdministrador
   }
-
-  
 
 }

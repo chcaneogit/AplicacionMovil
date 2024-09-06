@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
   login(username: string, password: string){
     if(this._authService.autentificacion(username, password)){
       console.info("Usuario Existe")
-      this.router.navigate(['home'], {
+      this.router.navigate(['dashboard'], {
         state: {
           usuario: username
         }

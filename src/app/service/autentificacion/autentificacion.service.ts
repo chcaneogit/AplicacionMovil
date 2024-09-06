@@ -11,7 +11,7 @@ export class AutentificacionService {
 
   autentificacion(username: string, password: string): boolean{
     const usuarios = this._servicioUsuario.obtener_lista_usuarios();
-    const usuarioExiste = usuarios.some(usuario => usuario.username == username && usuario.password == password);
+    const usuarioExiste = usuarios.some(usuario => usuario.correo == username && usuario.password == password);
     if (usuarioExiste) {
       return true;
     }else{

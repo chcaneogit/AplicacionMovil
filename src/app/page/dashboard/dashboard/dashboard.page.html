@@ -15,17 +15,17 @@
 
         <ion-item>
           <ion-label>Nombre:</ion-label>
-          <ion-text>{{usuario?.nombre}} {{usuario?.apellido}}</ion-text>
+          <ion-text>{{usuario?.nombre}}</ion-text>
         </ion-item>
 
         <ion-item>
           <ion-label>Username:</ion-label>
-          <ion-text>{{usuario?.username}}</ion-text>
+          <ion-text>{{usuario?.correo}}</ion-text>
         </ion-item>
 
         <ion-item>
           <ion-label>Email:</ion-label>
-          <ion-text>{{usuario?.email}}</ion-text>
+          <ion-text>{{usuario?.correo}}</ion-text>
         </ion-item>
 
         <ion-item>
@@ -56,14 +56,14 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Compañias</ion-card-title>
+      <ion-card-title>Rol</ion-card-title>
     </ion-card-header>
     <ion-card-content>
 
       <ion-item>
         <ion-list>
-          <ion-item *ngFor="let compania of usuario?.compania">
-            <ion-text>{{compania.nombre}}</ion-text>
+          <ion-item *ngFor="let role of usuario?.role">
+            <ion-text>{{role.nombre}}</ion-text>
           </ion-item>
         </ion-list>
       </ion-item>
