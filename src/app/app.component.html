@@ -1,6 +1,6 @@
 <ion-app>
   <!-- Menú lateral -->
-  <ion-menu contentId="main-content" [disabled] = "menuDisabled">
+  <ion-menu contentId="main-content">
     <ion-header>
       <ion-toolbar>
         <!-- Botón para cerrar el menú -->
@@ -17,35 +17,45 @@
     <ion-content>
       <!-- Lista de opciones del menú -->
       <ion-list>
-        <ion-item (click)="irHome()">
-          <ion-icon name="home-outline" slot="start"></ion-icon>
-          <ion-label>Inicio</ion-label>
-        </ion-item>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item (click)="irHome()">
+            <ion-icon name="home-outline" slot="start"></ion-icon>
+            <ion-label>Inicio</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
 
         <!-- Mostrar opciones si el usuario no está autenticado -->
         <ng-container *ngIf="!estaAutenticado()">
-          <ion-item (click)="irLogin()">
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-label>Iniciar sesión</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irLogin()">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-label>Iniciar sesión</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
-          <ion-item>
-            <ion-icon name="person-add-outline" slot="start"></ion-icon>
-            <ion-label>Registrarse</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irRegistro()">
+              <ion-icon name="person-add-outline" slot="start"></ion-icon>
+              <ion-label>Registrarse</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ng-container>
 
         <!-- Mostrar opciones si el usuario está autenticado -->
         <ng-container *ngIf="estaAutenticado()">
-          <ion-item (click)="irPerfil()">
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-label>Perfil</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irPerfil()">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-label>Perfil</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
-          <ion-item (click)="cerrarSesion()">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
-            <ion-label>Cerrar sesión</ion-label>
-          </ion-item>
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="cerrarSesion()">
+              <ion-icon name="log-out-outline" slot="start"></ion-icon>
+              <ion-label>Cerrar sesión</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ng-container>
       </ion-list>
     </ion-content>

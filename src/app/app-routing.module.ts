@@ -12,13 +12,24 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./page/dashboard/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'lista-usuarios',
+    loadChildren: () => import('./page/lista-usuarios/lista-usuarios.module').then( m => m.ListaUsuariosPageModule)
+  },
+  {
+    path: 'registro',
+    loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
+  },
+
+
+
 ];
 
 @NgModule({

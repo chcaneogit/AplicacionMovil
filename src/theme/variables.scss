@@ -2,12 +2,8 @@
 
 /* Colores personalizados */
 :root {
-  --ion-background-color: #F0F0F0; /* Color de fondo general de la aplicación */
-  --ion-card-background: #FFFFFF; /* Color de fondo para los contenedores (tarjetas, secciones) */
+
   --ion-toolbar-background: #1ab5c0; /* Color de fondo para encabezados o áreas importantes */
-  --ion-color-primary: #1976D2; /* Color principal, usado también para botones de acción */
-  --ion-color-primary-contrast: #FFFFFF; /* Color de contraste para textos en el color principal */
-  --ion-menu-background: #424242; /* Color de fondo para el menú lateral */
   --ion-text-color: #333333; /* Color de texto general */
 }
 
@@ -16,3 +12,26 @@ h4, .ubi{
   justify-content: center; /* Centra horizontalmente el botón */
   margin-top: 20px; /* Añade margen superior si es necesario */
 }
+
+ion-content {
+  --background: none;
+  background-image: url('/assets/imagenes/logo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  --background: rgba(255, 255, 255, 0.5);
+}
+
+/* Estilo para los ítems de la lista */
+ion-list {
+  --ion-background-color: #1ab5c0ab; /* Hace que la lista sea transparente */
+}
+
+ion-item {
+  --background: transparent; /* Hace que cada ítem de la lista sea transparente */
+  backdrop-filter: blur(5px); /* Añade un efecto de desenfoque a los ítems de la lista (opcional) */
+}
+
+// ion-card {
+//   --background: #1ab5c0ab; /* Color de fondo del contenido con más transparencia */
+// }

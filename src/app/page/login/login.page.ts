@@ -12,24 +12,20 @@ export class LoginPage implements OnInit {
   username: string = "";
   password: string = "";
 
-
   constructor(private _authService: AutentificacionService, private router: Router) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
-
-  login(username: string, password: string){
-    if(this._authService.autentificacion(username, password)){
-      console.info("Usuario Existe")
+  login(username: string, password: string) {
+    if (this._authService.autentificacion(username, password)) {
+      console.info("Usuario Existe");
       this.router.navigate(['dashboard'], {
         state: {
           usuario: username
         }
-      })
-    }else{
-      console.error("Usuario No existe")
+      });
+    } else {
+      console.error("Usuario No existe");
     }
   }
-
 }
