@@ -1,6 +1,7 @@
 // src/app/page/reportes/reportes.page.ts
 import { Component, OnInit } from '@angular/core';
-import { ReportesService } from '../../service/reportes.service'; 
+import { ReportesService } from '../../service/reportes/reportes.service';
+
 
 @Component({
   selector: 'app-reportes',
@@ -15,9 +16,12 @@ export class ReportesPage implements OnInit {
   // Objeto para un nuevo reporte
   nuevoReporte = {
     region: '',
-    tipoVehiculo: '',
+    tipo_vehiculo: '',
     color: '',
-    patente: ''
+    patente: '',
+    modelo: '',
+    marca: '',
+    fecha_publicacion: '',
   };
 
   constructor(private reportesService: ReportesService) { }
@@ -27,24 +31,27 @@ export class ReportesPage implements OnInit {
     this.reportes = this.reportesService.getReportes();
   }
 
-  // Método para agregar un nuevo reporte
   agregarReporte() {
-    if (this.nuevoReporte.region && this.nuevoReporte.tipoVehiculo && this.nuevoReporte.color && this.nuevoReporte.patente) {
-      // Agregar el nuevo reporte
-      this.reportesService.agregarReporte({...this.nuevoReporte});
-      
-      // Actualizar la lista de reportes
-      this.reportes = this.reportesService.getReportes();
+    // Asignar la fecha actual a nuevoReporte.fecha_publicacion
+    const today = new Date();
+    this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
 
-      // Reiniciar el formulario
-      this.nuevoReporte = {
-        region: '',
-        tipoVehiculo: '',
-        color: '',
-        patente: ''
-      };
-    } else {
-      alert('Por favor, complete todos los campos.');
-    }
+    // Agregar el nuevo reporte
+    this.reportesService.agregarReporte({ ...this.nuevoReporte });
+
+    // Actualizar la lista de reportes
+    this.reportes = this.reportesService.getReportes();
+
+    // Reiniciar el formulario
+    this.nuevoReporte = {
+      region: '',
+      tipo_vehiculo: '',
+      marca: '',
+      modelo: '',
+      color: '',
+      patente: '',
+      fecha_publicacion: ''
+    };
   }
-}
+  }
+
