@@ -1,4 +1,6 @@
+// src/app/page/reportes/reportes.page.ts
 import { Component, OnInit } from '@angular/core';
+import { ReportesService } from '../../service/reportes.service'; 
 
 @Component({
   selector: 'app-reportes',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportesPage implements OnInit {
 
-  // Variable para almacenar el nuevo reporte
+  // Variable para almacenar la lista de reportes
+  reportes: any[] = [];
+
+  // Objeto para un nuevo reporte
   nuevoReporte = {
     region: '',
     tipoVehiculo: '',
@@ -15,20 +20,23 @@ export class ReportesPage implements OnInit {
     patente: ''
   };
 
-  // Lista para almacenar los reportes
-  reportes: Array<any> = [];
-
-  constructor() { }
+  constructor(private reportesService: ReportesService) { }
 
   ngOnInit() {
-    // Inicializar con reportes predefinidos o cargar desde una fuente de datos
-    // this.reportes = [{ region: 'Región 1', tipoVehiculo: 'SUV', color: 'Rojo', patente: 'ABC123' }];
+    // Cargar los reportes existentes al iniciar el componente
+    this.reportes = this.reportesService.getReportes();
   }
 
+  // Método para agregar un nuevo reporte
   agregarReporte() {
     if (this.nuevoReporte.region && this.nuevoReporte.tipoVehiculo && this.nuevoReporte.color && this.nuevoReporte.patente) {
-      this.reportes.push({...this.nuevoReporte});
-      // Limpiar los campos después de agregar el reporte
+      // Agregar el nuevo reporte
+      this.reportesService.agregarReporte({...this.nuevoReporte});
+      
+      // Actualizar la lista de reportes
+      this.reportes = this.reportesService.getReportes();
+
+      // Reiniciar el formulario
       this.nuevoReporte = {
         region: '',
         tipoVehiculo: '',
@@ -39,5 +47,4 @@ export class ReportesPage implements OnInit {
       alert('Por favor, complete todos los campos.');
     }
   }
-
 }

@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ReportesService } from '../service/reportes.service'; // Asegúrate de que la ruta sea correcta
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  reportes: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private reportesService: ReportesService) { }
 
-  
-
+  ngOnInit() {
+    // Aquí obtendremos los reportes desde el servicio
+    this.reportes = this.reportesService.getReportes();
+  }
 }

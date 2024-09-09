@@ -3,51 +3,39 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>FindCar</ion-title>
+    <ion-title>Reportes de Autos Robados</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="main-content"> 
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Reportes de Autos Robados</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-list>
+    <!-- Mostrar la lista de reportes -->
+    <ion-item *ngFor="let reporte of reportes">
+      <ion-label>
+        <h2>Región: {{ reporte.region }}</h2>
+        <p>Tipo de Vehículo: {{ reporte.tipoVehiculo }}</p>
+        <p>Color: {{ reporte.color }}</p>
+        <p>Patente: {{ reporte.patente }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-  <ion-content>
-    <ion-list>
-      <ion-item>
-        <ion-label>Región</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.region"></ion-input>
-      </ion-item>
+  <ion-item>
+    <ion-label position="floating">Región</ion-label>
+    <ion-input [(ngModel)]="nuevoReporte.region"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Tipo de Vehículo</ion-label>
+    <ion-input [(ngModel)]="nuevoReporte.tipoVehiculo"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Color</ion-label>
+    <ion-input [(ngModel)]="nuevoReporte.color"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Patente</ion-label>
+    <ion-input [(ngModel)]="nuevoReporte.patente"></ion-input>
+  </ion-item>
 
-      <ion-item>
-        <ion-label>Tipo de Vehículo</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.tipoVehiculo"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Color</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.color"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Patente</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.patente"></ion-input>
-      </ion-item>
-
-      <ion-button expand="full" (click)="agregarReporte()">Agregar Reporte</ion-button>
-    </ion-list>
-
-    <ion-list>
-      <ion-item *ngFor="let reporte of reportes">
-        <ion-label>
-          Región: {{ reporte.region }}<br>
-          Tipo de Vehículo: {{ reporte.tipoVehiculo }}<br>
-          Color: {{ reporte.color }}<br>
-          Patente: {{ reporte.patente }}
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+  <ion-button expand="full" (click)="agregarReporte()">Agregar Reporte</ion-button>
 </ion-content>
