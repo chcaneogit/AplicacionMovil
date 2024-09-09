@@ -15,21 +15,22 @@ const routes: Routes = [
     loadChildren: () => import('./page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'registro',
+    loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
     path: 'lista-usuarios',
     loadChildren: () => import('./page/lista-usuarios/lista-usuarios.module').then( m => m.ListaUsuariosPageModule)
   },
   {
-    path: 'registro',
-    loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
+    path: 'reportes',  // Nueva ruta para Reportes
+    loadChildren: () => import('./page/reportes/reportes.module').then( m => m.ReportesPageModule)
   },
-
-
-
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

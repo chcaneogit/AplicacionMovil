@@ -50,6 +50,14 @@
             </ion-item>
           </ion-menu-toggle>
 
+           <!-- Botón para la sección de Reportes -->
+           <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="irReportes()">
+              <ion-icon name="document-text-outline" slot="start"></ion-icon>
+              <ion-label>Reportes</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="cerrarSesion()">
               <ion-icon name="log-out-outline" slot="start"></ion-icon>

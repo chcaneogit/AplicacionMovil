@@ -45,4 +45,10 @@ export class AppComponent implements OnInit {
     this._authService.cerrarSesion();
     this.router.navigate(['/login']);
   }
+
+    // Nueva función para ir a la página de reportes
+    irReportes() {
+      this.router.navigate(['/reportes']); // Asegúrate de tener una ruta configurada para "/reportes"
+    }
+  
 }
