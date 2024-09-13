@@ -12,86 +12,131 @@
     <h2>Agregar Reporte</h2>
 
     <form (ngSubmit)="agregarReporte()">
+      <!-- Selección de región -->
       <ion-item>
         <ion-label>Región</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.region"
-          name="region"
-          required
-        ></ion-input>
+        <ion-select [(ngModel)]="nuevoReporte.region" name="region" placeholder="Selecciona una región" required>
+          <ion-select-option value="Región de Arica y Parinacota">Región de Arica y Parinacota</ion-select-option>
+          <ion-select-option value="Región de Tarapacá">Región de Tarapacá</ion-select-option>
+          <ion-select-option value="Región de Antofagasta">Región de Antofagasta</ion-select-option>
+          <ion-select-option value="Región de Atacama">Región de Atacama</ion-select-option>
+          <ion-select-option value="Región de Coquimbo">Región de Coquimbo</ion-select-option>
+          <ion-select-option value="Región de Valparaíso">Región de Valparaíso</ion-select-option>
+          <ion-select-option value="Región Metropolitana">Región Metropolitana</ion-select-option>
+          <ion-select-option value="Región de O’Higgins">Región de O’Higgins</ion-select-option>
+          <ion-select-option value="Región del Maule">Región del Maule</ion-select-option>
+          <ion-select-option value="Región del Ñuble">Región del Ñuble</ion-select-option>
+          <ion-select-option value="Región del Biobío">Región del Biobío</ion-select-option>
+          <ion-select-option value="Región de La Araucanía">Región de La Araucanía</ion-select-option>
+          <ion-select-option value="Región de Los Ríos">Región de Los Ríos</ion-select-option>
+          <ion-select-option value="Región de Los Lagos">Región de Los Lagos</ion-select-option>
+          <ion-select-option value="Región de Aysén">Región de Aysén</ion-select-option>
+          <ion-select-option value="Región de Magallanes">Región de Magallanes</ion-select-option>
+        </ion-select>
       </ion-item>
 
-      <ion-item>
-        <ion-label>Tipo de Vehículo</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.tipo_vehiculo"
-          name="tipoVehiculo"
-          required
-        ></ion-input>
-      </ion-item>
-
+      <!-- Selección de marca -->
       <ion-item>
         <ion-label>Marca</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.marca"
-          name="marca"
-          required
-        ></ion-input>
+        <ion-select [(ngModel)]="nuevoReporte.marca" name="marca" placeholder="Selecciona una marca" required>
+          <ion-select-option value="Toyota">Toyota</ion-select-option>
+          <ion-select-option value="Honda">Honda</ion-select-option>
+          <ion-select-option value="Ford">Ford</ion-select-option>
+          <ion-select-option value="Chevrolet">Chevrolet</ion-select-option>
+          <ion-select-option value="Nissan">Nissan</ion-select-option>
+          <ion-select-option value="BMW">BMW</ion-select-option>
+          <ion-select-option value="Mercedes-Benz">Mercedes-Benz</ion-select-option>
+          <ion-select-option value="Audi">Audi</ion-select-option>
+          <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
+          <ion-select-option value="Hyundai">Hyundai</ion-select-option>
+          <ion-select-option value="Kia">Kia</ion-select-option>
+          <ion-select-option value="Subaru">Subaru</ion-select-option>
+          <ion-select-option value="Mazda">Mazda</ion-select-option>
+          <ion-select-option value="Tesla">Tesla</ion-select-option>
+          <ion-select-option value="Lexus">Lexus</ion-select-option>
+          <ion-select-option value="Jeep">Jeep</ion-select-option>
+          <ion-select-option value="Volvo">Volvo</ion-select-option>
+          <ion-select-option value="Land Rover">Land Rover</ion-select-option>
+          <ion-select-option value="Porsche">Porsche</ion-select-option>
+          <ion-select-option value="Ferrari">Ferrari</ion-select-option>
+        </ion-select>
       </ion-item>
 
+      <!-- Selección de tipo de vehículo -->
       <ion-item>
-        <ion-label>Modelo</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.modelo"
-          name="modelo"
-          required
-        ></ion-input>
+        <ion-label>Tipo de Vehículo</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipoVehiculo" placeholder="Selecciona un tipo de vehículo" required>
+          <ion-select-option value="Sedán">Sedán</ion-select-option>
+          <ion-select-option value="SUV">SUV</ion-select-option>
+          <ion-select-option value="Hatchback">Hatchback</ion-select-option>
+          <ion-select-option value="Coupé">Coupé</ion-select-option>
+          <ion-select-option value="Convertible">Convertible</ion-select-option>
+          <ion-select-option value="Camioneta">Camioneta</ion-select-option>
+          <ion-select-option value="Pick-up">Pick-up</ion-select-option>
+          <ion-select-option value="Minivan">Minivan</ion-select-option>
+          <ion-select-option value="Furgoneta">Furgoneta</ion-select-option>
+          <ion-select-option value="Station Wagon">Station Wagon</ion-select-option>
+          <ion-select-option value="Crossover">Crossover</ion-select-option>
+          <ion-select-option value="Todoterreno">Todoterreno</ion-select-option>
+          <ion-select-option value="Roadster">Roadster</ion-select-option>
+          <ion-select-option value="Microbús">Microbús</ion-select-option>
+          <ion-select-option value="Deportivo">Deportivo</ion-select-option>
+        </ion-select>
       </ion-item>
 
+      <!-- Selección de color -->
       <ion-item>
         <ion-label>Color</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.color"
-          name="color"
-          required
-        ></ion-input>
+        <ion-select [(ngModel)]="nuevoReporte.color" name="color" placeholder="Selecciona un color" required>
+          <ion-select-option value="Negro">Negro</ion-select-option>
+          <ion-select-option value="Blanco">Blanco</ion-select-option>
+          <ion-select-option value="Gris">Gris</ion-select-option>
+          <ion-select-option value="Plateado">Plateado</ion-select-option>
+          <ion-select-option value="Azul">Azul</ion-select-option>
+          <ion-select-option value="Rojo">Rojo</ion-select-option>
+          <ion-select-option value="Verde">Verde</ion-select-option>
+          <ion-select-option value="Amarillo">Amarillo</ion-select-option>
+          <ion-select-option value="Naranja">Naranja</ion-select-option>
+          <ion-select-option value="Marrón">Marrón</ion-select-option>
+          <ion-select-option value="Beige">Beige</ion-select-option>
+          <ion-select-option value="Dorado">Dorado</ion-select-option>
+          <ion-select-option value="Violeta">Violeta</ion-select-option>
+          <ion-select-option value="Turquesa">Turquesa</ion-select-option>
+          <ion-select-option value="Rosa">Rosa</ion-select-option>
+          <ion-select-option value="Burgundy">Burgundy</ion-select-option>
+          <ion-select-option value="Cobre">Cobre</ion-select-option>
+          <ion-select-option value="Bronce">Bronce</ion-select-option>
+          <ion-select-option value="Azul marino">Azul marino</ion-select-option>
+          <ion-select-option value="Verde oliva">Verde oliva</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Campos adicionales -->
+      <ion-item>
+        <ion-label>Modelo</ion-label>
+        <ion-input [(ngModel)]="nuevoReporte.modelo" name="modelo" required></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label>Patente</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="nuevoReporte.patente"
-          name="patente"
-          required
-        ></ion-input>
+        <ion-input [(ngModel)]="nuevoReporte.patente" name="patente" required></ion-input>
       </ion-item>
 
-      <ion-button expand="full" type="submit">
-        Agregar Reporte
-      </ion-button>
+      <ion-button expand="full" type="submit">Agregar Reporte</ion-button>
     </form>
-
   </div>
 
-    <ion-list>
-      <!-- Mostrar la lista de reportes -->
-      <ion-item *ngFor="let reporte of reportes">
-        <ion-label>
-          <h2>Región: {{ reporte.region }}</h2>
-          <p>Tipo de Vehículo: {{ reporte.tipoVehiculo }}</p>
-          <p>Marca: {{ reporte.marca }}</p>
-          <p>Modelo: {{ reporte.modelo }}</p>
-          <p>Color: {{ reporte.color }}</p>
-          <p>Patente: {{ reporte.patente }}</p>
-          <p>Fecha de Publicación: {{ reporte.fecha_publicacion }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
+  <ion-list>
+    <ion-item *ngFor="let reporte of reportes">
+      <ion-label>
+        <h2>Región: {{ reporte.region }}</h2>
+        <p>Marca: {{ reporte.marca }}</p>
+        <p>Tipo de Vehículo: {{ reporte.tipo_vehiculo }}</p>
+        <p>Modelo: {{ reporte.modelo }}</p>
+        <p>Color: {{ reporte.color }}</p>
+        <p>Patente: {{ reporte.patente }}</p>
+        <p>Fecha de Publicación: {{ reporte.fecha_publicacion }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

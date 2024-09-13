@@ -18,8 +18,8 @@ export class UsuariosService {
     {
       rut: '11111-2',
       nombre: "Carlos asd",
-      password: "password123",
-      correo: "ejemplo2@ejemplo.com",
+      password: "aaa",
+      correo: "aaa",
       fecha_nacimiento: '01/02/2000',
       role: [{ id: 2, nombre: "administrador" }],
     },
