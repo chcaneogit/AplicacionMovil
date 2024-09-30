@@ -14,7 +14,7 @@
     <form (ngSubmit)="agregarReporte()">
       <!-- Selección de región -->
       <ion-item>
-        <ion-label>Región</ion-label>
+        <ion-label>Región:</ion-label>
         <ion-select [(ngModel)]="nuevoReporte.region" name="region" placeholder="Selecciona una región" required>
           <ion-select-option value="Región de Arica y Parinacota">Región de Arica y Parinacota</ion-select-option>
           <ion-select-option value="Región de Tarapacá">Región de Tarapacá</ion-select-option>
@@ -35,91 +35,134 @@
         </ion-select>
       </ion-item>
 
-      <!-- Selección de marca -->
+      <!-- Selección de tipo de vehículo -->
       <ion-item>
-        <ion-label>Marca</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.marca" name="marca" placeholder="Selecciona una marca" required>
-          <ion-select-option value="Toyota">Toyota</ion-select-option>
-          <ion-select-option value="Honda">Honda</ion-select-option>
-          <ion-select-option value="Ford">Ford</ion-select-option>
-          <ion-select-option value="Chevrolet">Chevrolet</ion-select-option>
-          <ion-select-option value="Nissan">Nissan</ion-select-option>
-          <ion-select-option value="BMW">BMW</ion-select-option>
-          <ion-select-option value="Mercedes-Benz">Mercedes-Benz</ion-select-option>
-          <ion-select-option value="Audi">Audi</ion-select-option>
-          <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
-          <ion-select-option value="Hyundai">Hyundai</ion-select-option>
-          <ion-select-option value="Kia">Kia</ion-select-option>
-          <ion-select-option value="Subaru">Subaru</ion-select-option>
-          <ion-select-option value="Mazda">Mazda</ion-select-option>
-          <ion-select-option value="Tesla">Tesla</ion-select-option>
-          <ion-select-option value="Lexus">Lexus</ion-select-option>
-          <ion-select-option value="Jeep">Jeep</ion-select-option>
-          <ion-select-option value="Volvo">Volvo</ion-select-option>
-          <ion-select-option value="Land Rover">Land Rover</ion-select-option>
-          <ion-select-option value="Porsche">Porsche</ion-select-option>
-          <ion-select-option value="Ferrari">Ferrari</ion-select-option>
+        <ion-label>Tipo de Vehículo:</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipoVehiculo" placeholder="Tipo de vehículo" required>
+          <ion-select-option value="auto">Auto</ion-select-option>
+          <ion-select-option value="camioneta">Camioneta</ion-select-option>
+          <ion-select-option value="moto">Moto</ion-select-option>
         </ion-select>
       </ion-item>
 
-      <!-- Selección de tipo de vehículo -->
+      <!-- Selección de marca -->
       <ion-item>
-        <ion-label>Tipo de Vehículo</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipoVehiculo" placeholder="Selecciona un tipo de vehículo" required>
-          <ion-select-option value="Sedán">Sedán</ion-select-option>
-          <ion-select-option value="SUV">SUV</ion-select-option>
-          <ion-select-option value="Hatchback">Hatchback</ion-select-option>
-          <ion-select-option value="Coupé">Coupé</ion-select-option>
-          <ion-select-option value="Convertible">Convertible</ion-select-option>
-          <ion-select-option value="Camioneta">Camioneta</ion-select-option>
-          <ion-select-option value="Pick-up">Pick-up</ion-select-option>
-          <ion-select-option value="Minivan">Minivan</ion-select-option>
-          <ion-select-option value="Furgoneta">Furgoneta</ion-select-option>
-          <ion-select-option value="Station Wagon">Station Wagon</ion-select-option>
-          <ion-select-option value="Crossover">Crossover</ion-select-option>
-          <ion-select-option value="Todoterreno">Todoterreno</ion-select-option>
-          <ion-select-option value="Roadster">Roadster</ion-select-option>
-          <ion-select-option value="Microbús">Microbús</ion-select-option>
-          <ion-select-option value="Deportivo">Deportivo</ion-select-option>
+        <ion-label>Marca:</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.marca" name="marca" placeholder="Selecciona una marca" required>
+          <ion-select-option value="Acura">Acura</ion-select-option>
+          <ion-select-option value="Alfa Romeo">Alfa Romeo</ion-select-option>
+          <ion-select-option value="Audi">Audi</ion-select-option>
+          <ion-select-option value="BAIC">BAIC</ion-select-option>
+          <ion-select-option value="BMW">BMW</ion-select-option>
+          <ion-select-option value="Chery">Chery</ion-select-option>
+          <ion-select-option value="Chevrolet">Chevrolet</ion-select-option>
+          <ion-select-option value="Chrysler">Chrysler</ion-select-option>
+          <ion-select-option value="Citroën">Citroën</ion-select-option>
+          <ion-select-option value="Dodge">Dodge</ion-select-option>
+          <ion-select-option value="Fiat">Fiat</ion-select-option>
+          <ion-select-option value="Ford">Ford</ion-select-option>
+          <ion-select-option value="Geely">Geely</ion-select-option>
+          <ion-select-option value="GMC">GMC</ion-select-option>
+          <ion-select-option value="Honda">Honda</ion-select-option>
+          <ion-select-option value="Hyundai">Hyundai</ion-select-option>
+          <ion-select-option value="Infiniti">Infiniti</ion-select-option>
+          <ion-select-option value="Isuzu">Isuzu</ion-select-option>
+          <ion-select-option value="Jaguar">Jaguar</ion-select-option>
+          <ion-select-option value="Jeep">Jeep</ion-select-option>
+          <ion-select-option value="Kia">Kia</ion-select-option>
+          <ion-select-option value="Lamborghini">Lamborghini</ion-select-option>
+          <ion-select-option value="Land Rover">Land Rover</ion-select-option>
+          <ion-select-option value="Lexus">Lexus</ion-select-option>
+          <ion-select-option value="Lincoln">Lincoln</ion-select-option>
+          <ion-select-option value="Mazda">Mazda</ion-select-option>
+          <ion-select-option value="Mercedes-Benz">Mercedes-Benz</ion-select-option>
+          <ion-select-option value="Mitsubishi">Mitsubishi</ion-select-option>
+          <ion-select-option value="Nissan">Nissan</ion-select-option>
+          <ion-select-option value="Peugeot">Peugeot</ion-select-option>
+          <ion-select-option value="Porsche">Porsche</ion-select-option>
+          <ion-select-option value="RAM">RAM</ion-select-option>
+          <ion-select-option value="Renault">Renault</ion-select-option>
+          <ion-select-option value="Seat">Seat</ion-select-option>
+          <ion-select-option value="Skoda">Skoda</ion-select-option>
+          <ion-select-option value="Smart">Smart</ion-select-option>
+          <ion-select-option value="Subaru">Subaru</ion-select-option>
+          <ion-select-option value="Suzuki">Suzuki</ion-select-option>
+          <ion-select-option value="Toyota">Toyota</ion-select-option>
+          <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
+          <ion-select-option value="Volvo">Volvo</ion-select-option>
+          <ion-select-option value="BYD">BYD</ion-select-option>
+          <ion-select-option value="Great Wall">Great Wall</ion-select-option>
+          <ion-select-option value="JAC">JAC</ion-select-option>
+          <ion-select-option value="Mahindra">Mahindra</ion-select-option>
+          <ion-select-option value="MG">MG</ion-select-option>
+          <ion-select-option value="SsangYong">SsangYong</ion-select-option>
+          <ion-select-option value="Tesla">Tesla</ion-select-option>
+          <ion-select-option value="Zhidou">Zhidou</ion-select-option>
+          <ion-select-option value="Zotye">Zotye</ion-select-option>
+          <ion-select-option value="Otro">Otro</ion-select-option>
         </ion-select>
+      </ion-item>
+
+      <!-- Selección de modelo -->
+      <ion-item>
+        <ion-label>Modelo:</ion-label>
+        <div >
+          <ion-input
+            [(ngModel)]="nuevoReporte.modelo"
+            name="modelo"
+            placeholder="Ingrese modelo"
+            [disabled]="nuevoReporte.desconocidoModelo"
+            required>
+          </ion-input>
+
+          <ion-toggle
+            [(ngModel)]="nuevoReporte.desconocidoModelo"
+            name="desconocido"
+            (ionChange)="onDesconocidoModelo()"><ion-label >Desconocido</ion-label>
+          </ion-toggle>
+
+        </div>
       </ion-item>
 
       <!-- Selección de color -->
       <ion-item>
-        <ion-label>Color</ion-label>
+        <ion-label>Color:</ion-label>
         <ion-select [(ngModel)]="nuevoReporte.color" name="color" placeholder="Selecciona un color" required>
           <ion-select-option value="Negro">Negro</ion-select-option>
           <ion-select-option value="Blanco">Blanco</ion-select-option>
           <ion-select-option value="Gris">Gris</ion-select-option>
-          <ion-select-option value="Plateado">Plateado</ion-select-option>
-          <ion-select-option value="Azul">Azul</ion-select-option>
           <ion-select-option value="Rojo">Rojo</ion-select-option>
+          <ion-select-option value="Azul">Azul</ion-select-option>
           <ion-select-option value="Verde">Verde</ion-select-option>
           <ion-select-option value="Amarillo">Amarillo</ion-select-option>
-          <ion-select-option value="Naranja">Naranja</ion-select-option>
-          <ion-select-option value="Marrón">Marrón</ion-select-option>
-          <ion-select-option value="Beige">Beige</ion-select-option>
+          <ion-select-option value="Naranjo">Naranjo</ion-select-option>
           <ion-select-option value="Dorado">Dorado</ion-select-option>
-          <ion-select-option value="Violeta">Violeta</ion-select-option>
-          <ion-select-option value="Turquesa">Turquesa</ion-select-option>
+          <ion-select-option value="Plateado">Plateado</ion-select-option>
+          <ion-select-option value="Morado">Morado</ion-select-option>
+          <ion-select-option value="Celeste">Celeste</ion-select-option>
           <ion-select-option value="Rosa">Rosa</ion-select-option>
-          <ion-select-option value="Burgundy">Burgundy</ion-select-option>
-          <ion-select-option value="Cobre">Cobre</ion-select-option>
-          <ion-select-option value="Bronce">Bronce</ion-select-option>
-          <ion-select-option value="Azul marino">Azul marino</ion-select-option>
-          <ion-select-option value="Verde oliva">Verde oliva</ion-select-option>
+          <ion-select-option value="Cafe">Café</ion-select-option>
         </ion-select>
       </ion-item>
 
-      <!-- Campos adicionales -->
+      <!-- Selección de patente -->
       <ion-item>
-        <ion-label>Modelo</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.modelo" name="modelo" required></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>Patente</ion-label>
-        <ion-input [(ngModel)]="nuevoReporte.patente" name="patente" required></ion-input>
+        <ion-label>Patente:</ion-label>
+        <div>
+          <ion-input
+            [(ngModel)]="nuevoReporte.patente"
+            name="patente"
+            placeholder="AABB12"
+            [disabled]="nuevoReporte.desconocidoPatente"
+            required>
+          </ion-input>
+          <ion-label >Desconocido</ion-label>
+          <ion-toggle
+            [(ngModel)]="nuevoReporte.desconocidoPatente"
+            name="desconocido"
+            (ionChange)="onDesconocidoPatente()">
+          </ion-toggle>
+        </div>
       </ion-item>
 
       <ion-button expand="full" type="submit">Agregar Reporte</ion-button>

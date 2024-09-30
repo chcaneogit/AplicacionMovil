@@ -28,4 +28,8 @@ export class LoginPage implements OnInit {
       console.error("Usuario No existe");
     }
   }
+
+  irRegistro() {
+    this.router.navigate(['/registro']);
+  }
 }

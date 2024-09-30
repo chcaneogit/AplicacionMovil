@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportesService } from '../../service/reportes/reportes.service';
 
-
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.page.html',
@@ -10,10 +9,8 @@ import { ReportesService } from '../../service/reportes/reportes.service';
 })
 export class ReportesPage implements OnInit {
 
-  // Variable para almacenar la lista de reportes
   reportes: any[] = [];
 
-  // Objeto para un nuevo reporte
   nuevoReporte = {
     region: '',
     tipo_vehiculo: '',
@@ -22,36 +19,50 @@ export class ReportesPage implements OnInit {
     modelo: '',
     marca: '',
     fecha_publicacion: '',
+    desconocidoModelo: false,  // Propiedad para el toggle
+    desconocidoPatente: false  // Propiedad para el toggle
   };
 
   constructor(private reportesService: ReportesService) { }
 
   ngOnInit() {
-    // Cargar los reportes existentes al iniciar el componente
     this.reportes = this.reportesService.getReportes();
   }
 
-  agregarReporte() {
-    // Asignar la fecha actual a nuevoReporte.fecha_publicacion
-    const today = new Date();
-    this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  onDesconocidoModelo() {
+    if (this.nuevoReporte.desconocidoModelo) {
+      this.nuevoReporte.modelo = 'Desconocido'; // Almacenar como "desconocido"
+    } else {
+      this.nuevoReporte.modelo = ''; // Reiniciar el modelo si se desactiva
+    }
+  }
 
-    // Agregar el nuevo reporte
+  onDesconocidoPatente() {
+    if (this.nuevoReporte.desconocidoPatente) {
+      this.nuevoReporte.patente = 'Desconocido'; // Almacenar como "desconocido"
+    } else {
+      this.nuevoReporte.patente = ''; // Reiniciar el modelo si se desactiva
+    }
+  }
+
+  agregarReporte() {
+    const today = new Date();
+    this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0];
+
     this.reportesService.agregarReporte({ ...this.nuevoReporte });
 
-    // Actualizar la lista de reportes
     this.reportes = this.reportesService.getReportes();
 
-    // Reiniciar el formulario
     this.nuevoReporte = {
       region: '',
       tipo_vehiculo: '',
       marca: '',
-      modelo: '',
+      modelo: '', // Reiniciar modelo
       color: '',
       patente: '',
-      fecha_publicacion: ''
+      fecha_publicacion: '',
+      desconocidoModelo: false,  // Reiniciar estado del toggle
+      desconocidoPatente: false  // Reiniciar estado del toggle
     };
   }
-  }
-
+}
