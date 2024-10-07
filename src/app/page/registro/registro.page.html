@@ -18,6 +18,18 @@
           type="text"
           [(ngModel)]="nuevo_usuario.rut"
           name="rut"
+          placeholder="Sin puntos ni guión"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Dígito verificador</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="nuevo_usuario.dv"
+          name="dv"
+          placeholder="Sin guión"
           required
         ></ion-input>
       </ion-item>
@@ -28,6 +40,7 @@
           type="text"
           [(ngModel)]="nuevo_usuario.nombre"
           name="nombre"
+          placeholder="Ingrese su nombre"
           required
         ></ion-input>
       </ion-item>

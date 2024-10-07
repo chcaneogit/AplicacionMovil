@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportesService } from '../service/reportes/reportes.service';
+import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 
 @Component({
   selector: 'app-home',
@@ -7,16 +7,24 @@ import { ReportesService } from '../service/reportes/reportes.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  reportes: any[] = []; // Almacena los reportes
 
-  reportes: any[] = [];
-
-  constructor(private reportesService: ReportesService) { }
+  constructor(private supabaseService: SupabaseService) {}
 
   ngOnInit() {
-    // Verifica que el servicio esté funcionando correctamente
-    console.log('Obteniendo reportes en HomePage');
-    this.reportes = this.reportesService.getReportes();
-    console.log('Reportes en HomePage:', this.reportes); // Verifica que se obtienen los reportes
+    // Obtener los reportes desde Supabase
+    this.supabaseService.getReportes().subscribe({
+      next: (response) => {
+        // Maneja la respuesta aquí
+        if (response.body) {
+          this.reportes = response.body; // Almacena los reportes
+          console.log('Reportes obtenidos:', this.reportes);
+        }
+      },
+      error: (err) => {
+        console.error('Error al obtener reportes:', err); // Manejar el error
+      }
+    });
   }
 
   verificarReportes() {

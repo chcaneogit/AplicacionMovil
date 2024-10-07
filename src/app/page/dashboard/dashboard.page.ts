@@ -1,29 +1,66 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AutentificacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { Usuario } from 'src/app/models/usuario';
-import { UsuariosService } from 'src/app/service/usuarios/usuarios.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy {
 
   usuario: Usuario | undefined;
+  private userSubscription: Subscription | undefined;
+  private authSubscription: Subscription | undefined;
 
-  constructor(private router: Router, private _usuarioService: UsuariosService) { }
+  constructor(
+    private router: Router,
+    private _authService: AutentificacionService,
+    private _supabaseService: SupabaseService
+  ) { }
 
   ngOnInit() {
-    const username = this.router.getCurrentNavigation()?.extras?.state?.['usuario'];
-    console.log(username)
-    this.usuario = this._usuarioService.obtener_info_usuario(username);
-    console.log(this.usuario)
+    // Suscribirse al estado de autenticación y al RUT del usuario
+    this.authSubscription = this._authService.estaAutenticado().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this._authService.obtenerRutUsuario().subscribe(rut => {
+          if (rut) {
+            this.userSubscription = this._supabaseService.getUsuarioByRut(+rut).subscribe(
+              response => {
+                if (response && response.length > 0) {
+                  this.usuario = response[0]; // Asumimos que la respuesta es un array y tomamos el primer elemento
+                  console.log(this.usuario);
+                } else {
+                  console.error('Usuario no encontrado');
+                  this.router.navigate(['/login']); // Redirigir si no se encuentra el usuario
+                }
+              },
+              error => {
+                console.error('Error al obtener el usuario:', error);
+                this.router.navigate(['/login']); // Redirigir en caso de error
+              }
+            );
+          } else {
+            console.error('RUT no encontrado');
+            this.router.navigate(['/login']); // Redirigir si no hay RUT
+          }
+        });
+      } else {
+        this.router.navigate(['/login']); // Redirigir si no está autenticado
+      }
+    });
   }
 
-  obtenerAdministrador(){
-    const esAdministrador = this.usuario?.role.some(rol => rol.nombre == 'administrador');
-    return esAdministrador
+  ngOnDestroy() {
+    // Cancelar suscripciones para evitar fugas de memoria
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
-
 }

@@ -11,7 +11,7 @@
             </ion-button>
           </ion-menu-toggle>
         </ion-buttons>
-        <ion-title>Menu Content</ion-title>
+        <ion-title>{{ usuarioNombre || 'bienvenido '}}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -25,7 +25,7 @@
         </ion-menu-toggle>
 
         <!-- Mostrar opciones si el usuario no está autenticado -->
-        <ng-container *ngIf="!estaAutenticado()">
+        <ng-container *ngIf="!usuarioAutenticado">
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="irLogin()">
               <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -42,7 +42,7 @@
         </ng-container>
 
         <!-- Mostrar opciones si el usuario está autenticado -->
-        <ng-container *ngIf="estaAutenticado()">
+        <ng-container *ngIf="usuarioAutenticado">
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="irPerfil()">
               <ion-icon name="person-outline" slot="start"></ion-icon>
@@ -50,8 +50,8 @@
             </ion-item>
           </ion-menu-toggle>
 
-           <!-- Botón para la sección de Reportes -->
-           <ion-menu-toggle auto-hide="false">
+          <!-- Botón para la sección de Reportes -->
+          <ion-menu-toggle auto-hide="false">
             <ion-item (click)="irReportes()">
               <ion-icon name="document-text-outline" slot="start"></ion-icon>
               <ion-label>Reportes</ion-label>

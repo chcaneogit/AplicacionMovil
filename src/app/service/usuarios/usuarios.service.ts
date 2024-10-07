@@ -8,28 +8,31 @@ export class UsuariosService {
   private lista_de_usuarios: Usuario[] = [
     // Lista de usuarios predefinida
     {
-      rut: '11111-1',
+      rut: 111111,
+      dv: '1',
       nombre: "Carlos Mendoxsxaza",
       password: "1234",
       correo: "1234",
       fecha_nacimiento: '01/01/2000',
-      role: [{ id: 1, nombre: "cliente" }],
+
     },
     {
-      rut: '11111-2',
+      rut: 11111,
+      dv: '1',
       nombre: "Carlos asd",
       password: "aaa",
       correo: "aaa",
       fecha_nacimiento: '01/02/2000',
-      role: [{ id: 2, nombre: "administrador" }],
+
     },
     {
-      rut: '11111-3',
+      rut: 11111-3,
+      dv: '1',
       nombre: "Carlos dsd",
       password: "password123",
       correo: "ejemplo3@ejemplo.com",
       fecha_nacimiento: '01/03/2000',
-      role: [{ id: 1, nombre: "cliente" }],
+
     },
   ];
 
