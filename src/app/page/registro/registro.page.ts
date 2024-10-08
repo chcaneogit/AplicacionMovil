@@ -28,23 +28,26 @@ export class RegistroPage implements OnInit {
   ngOnInit() {}
 
   async registrarUsuario() {
-    // Validar que el RUT no sea null o vacío
-    if (!this.nuevo_usuario.rut) {
+    // Validar campos antes de continuar
+    if (!this.validarCampos()) {
+      return; // Si la validación falla, salir del método
+    }
+
+    if (this.nuevo_usuario.rut === null) {
       await this.presentAlert('Error de validación', 'El RUT es obligatorio.');
       return;
     }
 
     try {
       // Verificar si el RUT ya existe en la base de datos
-      const usuarioExistente = await this.supabaseService.getUsuarioByRut(this.nuevo_usuario.rut).toPromise();
+      const usuarioExistente = await this.supabaseService.getUsuarioByRut(this.nuevo_usuario.rut as number).toPromise();
 
       if (usuarioExistente && usuarioExistente.length > 0) {
-        // Si el RUT ya está registrado, mostrar un mensaje de error
         await this.presentAlert('Error de registro', 'El RUT ya está registrado en el sistema.');
         return;
       }
 
-      // Si el RUT no está registrado, procede con el registro
+      // Procede con el registro
       await this.supabaseService.addUsuario(this.nuevo_usuario).toPromise();
       this.resetFormulario();
       this.router.navigate(['/login']);
@@ -54,8 +57,6 @@ export class RegistroPage implements OnInit {
     }
   }
 
-
-  // Validación de campos (igual que antes)
   private validarCampos(): boolean {
     if (
       !this.nuevo_usuario.rut ||
@@ -92,7 +93,7 @@ export class RegistroPage implements OnInit {
       return false;
     }
 
-    return true;
+    return true; // Asegúrate de retornar true al final
   }
 
   private validarRutConDv(rut: number, dv: string): boolean {
@@ -106,7 +107,6 @@ export class RegistroPage implements OnInit {
     }
 
     const residuo = 11 - (suma % 11);
-
     let dvEsperado;
     if (residuo === 11) {
       dvEsperado = '0';

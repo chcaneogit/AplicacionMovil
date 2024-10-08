@@ -7,19 +7,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-item>
-    <ion-label>Nombre:</ion-label>
-    <ion-text>{{ usuario?.nombre }}</ion-text>
-  </ion-item>
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <ion-item>
+      <ion-label>Nombre: </ion-label>
+      <ion-text>{{ usuario?.nombre }}</ion-text>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Username:</ion-label>
-    <ion-text>{{ usuario?.correo }}</ion-text>
-  </ion-item>
+    <ion-item>
+      <ion-label>RUT: </ion-label>
+      <ion-text>{{ usuario?.rut }}-{{ usuario?.dv}}</ion-text>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Email:</ion-label>
-    <ion-text>{{ usuario?.correo }}</ion-text>
-  </ion-item>
+    <ion-item>
+      <ion-label>Email: </ion-label>
+      <ion-text>{{ usuario?.correo }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Fecha de nacimiento: </ion-label>
+      <ion-text>{{ usuario?.fecha_nacimiento }}</ion-text>
+    </ion-item>
+  </div>
 </ion-content>
