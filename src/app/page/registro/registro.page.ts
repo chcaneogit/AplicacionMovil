@@ -27,34 +27,42 @@ export class RegistroPage implements OnInit {
 
   ngOnInit() {}
 
-  async registrarUsuario() {
+  registrarUsuario() {
     // Validar campos antes de continuar
     if (!this.validarCampos()) {
       return; // Si la validación falla, salir del método
     }
 
     if (this.nuevo_usuario.rut === null) {
-      await this.presentAlert('Error de validación', 'El RUT es obligatorio.');
+      this.presentAlert('Error de validación', 'El RUT es obligatorio.');
       return;
     }
 
-    try {
-      // Verificar si el RUT ya existe en la base de datos
-      const usuarioExistente = await this.supabaseService.getUsuarioByRut(this.nuevo_usuario.rut as number).toPromise();
+    // Verificar si el RUT ya existe en la base de datos
+    this.supabaseService.getUsuarioByRut(this.nuevo_usuario.rut as number).subscribe({
+      next: async (usuarioExistente) => {
+        if (usuarioExistente && usuarioExistente.length > 0) {
+          await this.presentAlert('Error de registro', 'El RUT ya está registrado en el sistema.');
+          return;
+        }
 
-      if (usuarioExistente && usuarioExistente.length > 0) {
-        await this.presentAlert('Error de registro', 'El RUT ya está registrado en el sistema.');
-        return;
+        // Procede con el registro
+        this.supabaseService.addUsuario(this.nuevo_usuario).subscribe({
+          next: async () => {
+            this.resetFormulario();
+            this.router.navigate(['/login']);
+          },
+          error: async (error) => {
+            console.error('Error al registrar usuario:', error);
+            await this.presentAlert('Error al registrar usuario', 'Por favor, intenta nuevamente.');
+          }
+        });
+      },
+      error: async (error) => {
+        console.error('Error al verificar RUT:', error);
+        await this.presentAlert('Error al verificar RUT', 'Por favor, intenta nuevamente.');
       }
-
-      // Procede con el registro
-      await this.supabaseService.addUsuario(this.nuevo_usuario).toPromise();
-      this.resetFormulario();
-      this.router.navigate(['/login']);
-    } catch (error) {
-      console.error('Error al registrar usuario:', error);
-      await this.presentAlert('Error al registrar usuario', 'Por favor, intenta nuevamente.');
-    }
+    });
   }
 
   private validarCampos(): boolean {

@@ -52,6 +52,13 @@ export class SupabaseService {
     return this.post<any>('reporte', reporte);
   }
 
+  getReportesByUsuario(rutUsuario: string): Observable<any[]> {
+    const params = new HttpParams().set('rut_usuario', `eq.${rutUsuario}`);
+    return this.http.get<any[]>(`${this.baseUrl}/reporte`, { headers: this.getHeaders(), params })
+      .pipe(
+        catchError(this.handleError) // Manejar errores
+      );
+  }
 
   // Métodos específicos para usuarios
   getUsuarios(): Observable<HttpResponse<any>> {
@@ -73,7 +80,4 @@ export class SupabaseService {
     return this.http.get<any>(`${this.baseUrl}/usuario?correo=eq.${correo}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
-
-
-
 }

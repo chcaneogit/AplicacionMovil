@@ -41,7 +41,6 @@
         <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipoVehiculo" placeholder="Tipo de vehículo" required>
           <ion-select-option value="Auto">Auto</ion-select-option>
           <ion-select-option value="Camioneta">Camioneta</ion-select-option>
-          <ion-select-option value="Moto">Moto</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -169,7 +168,7 @@
     </form>
   </div>
 
-  <ion-list>
+  <!-- <ion-list>
     <ion-item *ngFor="let reporte of reportes">
       <ion-label>
         <h2>Región: {{ reporte.region }}</h2>
@@ -181,5 +180,5 @@
         <p>Fecha de Publicación: {{ reporte.fecha_publicacion }}</p>
       </ion-label>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
 </ion-content>

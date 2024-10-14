@@ -11,7 +11,7 @@
             </ion-button>
           </ion-menu-toggle>
         </ion-buttons>
-        <ion-title>{{ usuarioNombre || 'bienvenido '}}</ion-title>
+        <ion-title>{{ usuarioNombre || 'Bienvenido' }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -51,11 +51,25 @@
           </ion-menu-toggle>
 
           <!-- Botón para la sección de Reportes -->
+
+          <ion-item (click)="toggleReportes()">
+            <ion-icon name="document-text-outline" slot="start"></ion-icon>
+            <ion-label>Reportes</ion-label>
+            <ion-icon [name]="mostrarReportes ? 'chevron-up-outline' : 'chevron-down-outline'" slot="end"></ion-icon>
+          </ion-item>
+
+          <!-- Submenú -->
           <ion-menu-toggle auto-hide="false">
-            <ion-item (click)="irReportes()">
-              <ion-icon name="document-text-outline" slot="start"></ion-icon>
-              <ion-label>Reportes</ion-label>
+          <ion-list *ngIf="mostrarReportes">
+            <ion-item (click)="irReportes()" style="--padding-start: 30px;">
+              <ion-icon name="eye-outline"></ion-icon>
+              <ion-label> Ver mis reportes</ion-label>
             </ion-item>
+            <ion-item (click)="irRegistroReporte()" style="--padding-start: 30px;">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              <ion-label> Agregar reporte</ion-label>
+            </ion-item>
+          </ion-list>
           </ion-menu-toggle>
 
           <ion-menu-toggle auto-hide="false">

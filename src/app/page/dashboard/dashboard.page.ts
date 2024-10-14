@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AutentificacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { Usuario } from 'src/app/models/usuario';
 import { Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private _authService: AutentificacionService,
+    private _authService: AutenticacionService,
     private _supabaseService: SupabaseService
   ) { }
 

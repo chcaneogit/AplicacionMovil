@@ -30,7 +30,12 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'ver-reporte',
+    loadChildren: () => import('./page/ver-reporte/ver-reporte.module').then( m => m.VerReportePageModule)
   }
+
 ];
 
 @NgModule({
