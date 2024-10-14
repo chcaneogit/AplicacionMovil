@@ -23,35 +23,26 @@ export class DashboardPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // Suscribirse al estado de autenticación y al RUT del usuario
-    this.authSubscription = this._authService.estaAutenticado().subscribe(isAuthenticated => {
-      if (isAuthenticated) {
-        this._authService.obtenerRutUsuario().subscribe(rut => {
-          if (rut) {
-            this.userSubscription = this._supabaseService.getUsuarioByRut(+rut).subscribe(
-              response => {
-                if (response && response.length > 0) {
-                  this.usuario = response[0]; // Asumimos que la respuesta es un array y tomamos el primer elemento
-                  console.log(this.usuario);
-                } else {
-                  console.error('Usuario no encontrado');
-                  this.router.navigate(['/login']); // Redirigir si no se encuentra el usuario
-                }
-              },
-              error => {
-                console.error('Error al obtener el usuario:', error);
-                this.router.navigate(['/login']); // Redirigir en caso de error
-              }
-            );
-          } else {
-            console.error('RUT no encontrado');
-            this.router.navigate(['/login']); // Redirigir si no hay RUT
-          }
+    this.cargarUsuario(); // Llama directamente a cargarUsuario al iniciar
+  }
+
+  cargarUsuario() {
+    this._authService.obtenerRutUsuario().subscribe(rut => {
+      if (rut) {
+        this._supabaseService.getUsuarioByRut(+rut).subscribe(response => {
+          this.usuario = response[0];
+        }, error => {
+          console.error('Error al cargar el usuario:', error);
+          this.router.navigate(['/login']); // Redirigir en caso de error
         });
       } else {
-        this.router.navigate(['/login']); // Redirigir si no está autenticado
+        this.router.navigate(['/login']); // Redirigir si no hay RUT
       }
     });
+  }
+
+  navegarAEditarPerfil(){
+    this.router.navigate(['/editar-perfil'])
   }
 
   ngOnDestroy() {
@@ -63,4 +54,5 @@ export class DashboardPage implements OnInit, OnDestroy {
       this.authSubscription.unsubscribe();
     }
   }
+
 }

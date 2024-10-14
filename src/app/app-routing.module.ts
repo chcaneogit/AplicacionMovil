@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'ver-reporte',
     loadChildren: () => import('./page/ver-reporte/ver-reporte.module').then( m => m.VerReportePageModule)
+  },  {
+    path: 'editar-perfil',
+    loadChildren: () => import('./page/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
   }
+
 
 ];
 

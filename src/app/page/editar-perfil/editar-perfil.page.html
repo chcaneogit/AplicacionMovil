@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="guardarCambios()">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngFor="let campo of ['nombre', 'rut', 'correo', 'fecha_nacimiento']" class="field-container">
+    <ion-label>{{ campo.charAt(0).toUpperCase() + campo.slice(1) }}:</ion-label>
+
+    <div class="field-content">
+      <ion-input
+        [(ngModel)]="usuario[campo]"
+        [readonly]="editField !== campo"
+        required>
+      </ion-input>
+
+      <ion-button slot="end" color="primary" (click)="editarCampo(campo)" *ngIf="!editField || editField !== campo">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+
+      <ion-button slot="end" color="medium" (click)="cancelarEdicion()" *ngIf="editField === campo">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,15 @@
+.field-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px; // Espacio entre los campos
+}
+
+.field-content {
+  flex: 1; // Permite que el input ocupe el espacio disponible
+  display: flex;
+  align-items: center;
+}
+
+ion-button {
+  margin-left: 8px; // Espaciado entre el input y el botón
+}

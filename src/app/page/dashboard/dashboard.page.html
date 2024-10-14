@@ -20,7 +20,7 @@
 
     <ion-item>
       <ion-text>RUT :</ion-text>
-      <strong>{{ usuario?.rut }}-{{ usuario?.dv}}</strong>
+      <strong>{{ usuario?.rut }}-{{ usuario?.dv }}</strong>
     </ion-item>
     <br>
 
@@ -35,5 +35,12 @@
       <strong>{{ usuario?.fecha_nacimiento }}</strong>
     </ion-item>
     <br>
+
+    <!-- Botón para editar perfil -->
+    <ion-item>
+      <ion-button expand="full" (click)="navegarAEditarPerfil()">
+        Editar Perfil
+      </ion-button>
+    </ion-item>
   </div>
 </ion-content>

@@ -80,4 +80,12 @@ export class SupabaseService {
     return this.http.get<any>(`${this.baseUrl}/usuario?correo=eq.${correo}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+  updateUsuario(usuario: any): Observable<HttpResponse<any>> {
+    const path = `usuario?rut=eq.${usuario.rut}`;
+    return this.http.put<any>(`${this.baseUrl}/${path}`, usuario, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
 }
+
+
