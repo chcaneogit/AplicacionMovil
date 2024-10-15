@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { AlertController } from '@ionic/angular';
+import { Usuario } from 'src/app/models/usuario';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
+import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -9,58 +10,86 @@ import { SupabaseService } from 'src/app/service/supabase/supabase.service';
   styleUrls: ['./editar-perfil.page.scss'],
 })
 export class EditarPerfilPage implements OnInit {
-  usuario: any = {}; // Asegúrate de que las propiedades estén definidas
-  editField: string | null = null; // Campo que se está editando
+  usuario: Usuario = {
+    nombre: '',
+    correo: '',
+    password: '',
+    fecha_nacimiento: '',
+    rut: null,
+    dv: ''
+  };
+  editField: string = '';
 
   constructor(
-    private authService: AutenticacionService,
     private supabaseService: SupabaseService,
-    private router: Router
+    private alertController: AlertController,
+    private autenticacionService: AutenticacionService
   ) {}
 
   ngOnInit() {
-    this.authService.estaAutenticado().subscribe(isAuthenticated => {
-      console.log('Estado de autenticación:', isAuthenticated); // Agrega este log
-      if (isAuthenticated) {
-        this.cargarUsuario(); // Solo carga el usuario si está autenticado
-      } else {
-        this.router.navigate(['/login']); // Redirige si no está autenticado
-      }
-    });
+    this.cargarUsuario();
   }
 
   cargarUsuario() {
-    this.authService.obtenerRutUsuario().subscribe(rut => {
-      console.log('RUT obtenido:', rut); // Agrega este log
+    this.autenticacionService.obtenerRutUsuario().subscribe((rut) => {
       if (rut) {
-        this.supabaseService.getUsuarioByRut(+rut).subscribe(response => {
+        this.supabaseService.getUsuarioByRut(+rut).subscribe((response: any) => {
           if (response && response.length > 0) {
-            this.usuario = response[0]; // Asumiendo que la respuesta es un array
-            console.log('Usuario cargado:', this.usuario); // Para verificar que se carga correctamente
-          } else {
-            console.error('No se encontró el usuario con el RUT:', rut);
+            this.usuario = response[0]; // Ajusta según la estructura de tu respuesta
           }
         });
-      } else {
-        console.error('No se obtuvo RUT. Redirigiendo a login.');
-        this.router.navigate(['/login']); // Redirigir si no hay RUT
       }
-    });
-  }
-
-
-  guardarCambios() {
-    this.supabaseService.updateUsuario(this.usuario).subscribe(() => {
-      this.router.navigate(['/dashboard']); // Redirigir después de guardar
     });
   }
 
   editarCampo(campo: string) {
-    this.editField = campo; // Establece el campo actual como editable
+    this.editField = campo;
   }
 
   cancelarEdicion() {
-    this.editField = null; // Cancela la edición
-    this.cargarUsuario(); // Opcional: vuelve a cargar el usuario desde la base de datos
+    this.editField = '';
+    this.cargarUsuario(); // Recargar datos del usuario en caso de cancelar
+  }
+
+  async guardarCambios() {
+    if (!this.validarCampos()) {
+      return;
+    }
+
+    this.supabaseService.updateUsuario(this.usuario).subscribe({
+      next: async () => {
+        await this.presentAlert('Éxito', 'Los cambios han sido guardados.');
+        this.editField = ''; // Resetear el campo editado
+      },
+      error: async (error) => {
+        console.error('Error al guardar cambios:', error);
+        await this.presentAlert('Error', 'No se pudieron guardar los cambios.');
+      }
+    });
+  }
+
+  private validarCampos(): boolean {
+    if (!this.usuario.nombre || !this.usuario.correo || !this.usuario.password || !this.usuario.fecha_nacimiento) {
+      this.presentAlert('Error de validación', 'Todos los campos son obligatorios.');
+      return false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(this.usuario.correo)) {
+      this.presentAlert('Error de validación', 'Por favor, ingresa un correo electrónico válido.');
+      return false;
+    }
+
+    return true;
+  }
+
+  private async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }

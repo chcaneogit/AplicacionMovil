@@ -1,15 +1,17 @@
-.field-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px; // Espacio entre los campos
+ion-content {
+  --background: none;
+  background-image: url('/assets/imagenes/logo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.field-content {
-  flex: 1; // Permite que el input ocupe el espacio disponible
-  display: flex;
-  align-items: center;
-}
-
-ion-button {
-  margin-left: 8px; // Espaciado entre el input y el botón
+.form-container {
+  background-color: #ffffff;
+  
+  border: 1px solid #000000;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 16px 16PX;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

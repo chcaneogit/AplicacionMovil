@@ -19,10 +19,6 @@ const routes: Routes = [
     loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
   },
   {
-    path: 'lista-usuarios',
-    loadChildren: () => import('./page/lista-usuarios/lista-usuarios.module').then( m => m.ListaUsuariosPageModule)
-  },
-  {
     path: 'reportes',  // Nueva ruta para Reportes
     loadChildren: () => import('./page/reportes/reportes.module').then( m => m.ReportesPageModule)
   },
@@ -34,7 +30,8 @@ const routes: Routes = [
   {
     path: 'ver-reporte',
     loadChildren: () => import('./page/ver-reporte/ver-reporte.module').then( m => m.VerReportePageModule)
-  },  {
+  },
+  {
     path: 'editar-perfil',
     loadChildren: () => import('./page/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
   }

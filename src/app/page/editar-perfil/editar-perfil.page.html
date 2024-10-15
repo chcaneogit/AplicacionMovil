@@ -1,5 +1,8 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Editar Perfil</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="guardarCambios()">Guardar</ion-button>
@@ -8,24 +11,62 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div *ngFor="let campo of ['nombre', 'rut', 'correo', 'fecha_nacimiento']" class="field-container">
-    <ion-label>{{ campo.charAt(0).toUpperCase() + campo.slice(1) }}:</ion-label>
-
-    <div class="field-content">
+  <div class="form-container">
+    <ion-item>
+      <ion-label>Nombre:</ion-label>
       <ion-input
-        [(ngModel)]="usuario[campo]"
-        [readonly]="editField !== campo"
-        required>
+        type="text"
+        [(ngModel)]="usuario.nombre"
+        name="nombre"
+        required
+        [readonly]="editField !== 'nombre'">
       </ion-input>
-
-      <ion-button slot="end" color="primary" (click)="editarCampo(campo)" *ngIf="!editField || editField !== campo">
+      <ion-button slot="end" color="primary" (click)="editarCampo('nombre')">
         <ion-icon name="create"></ion-icon>
       </ion-button>
+    </ion-item>
 
-      <ion-button slot="end" color="medium" (click)="cancelarEdicion()" *ngIf="editField === campo">
-        <ion-icon name="close"></ion-icon>
+    <ion-item>
+      <ion-label>Correo Electrónico:</ion-label>
+      <ion-input
+        type="email"
+        [(ngModel)]="usuario.correo"
+        name="correo"
+        required
+        [readonly]="editField !== 'correo'">
+      </ion-input>
+      <ion-button slot="end" color="primary" (click)="editarCampo('correo')">
+        <ion-icon name="create"></ion-icon>
       </ion-button>
-    </div>
-  </div>
+    </ion-item>
 
+    <ion-item>
+      <ion-label>Contraseña:</ion-label>
+      <ion-input
+        type="password"
+        [(ngModel)]="usuario.password"
+        name="password"
+        required
+        [readonly]="editField !== 'password'">
+      </ion-input>
+      <ion-button slot="end" color="primary" (click)="editarCampo('password')">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Fecha de Nacimiento:</ion-label>
+      <ion-input
+        type="date"
+        [(ngModel)]="usuario.fecha_nacimiento"
+        name="fecha_nacimiento"
+        required
+        [readonly]="editField !== 'fecha_nacimiento'">
+      </ion-input>
+      
+      <ion-button slot="end" color="primary" (click)="editarCampo('fecha_nacimiento')">
+        <ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </div>
 </ion-content>
