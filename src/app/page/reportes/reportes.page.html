@@ -16,89 +16,45 @@
       <ion-item>
         <ion-label>Región:</ion-label>
         <ion-select [(ngModel)]="nuevoReporte.region" name="region" placeholder="Selecciona una región" required>
-          <ion-select-option value="Región de Arica y Parinacota">Región de Arica y Parinacota</ion-select-option>
-          <ion-select-option value="Región de Tarapacá">Región de Tarapacá</ion-select-option>
-          <ion-select-option value="Región de Antofagasta">Región de Antofagasta</ion-select-option>
-          <ion-select-option value="Región de Atacama">Región de Atacama</ion-select-option>
-          <ion-select-option value="Región de Coquimbo">Región de Coquimbo</ion-select-option>
-          <ion-select-option value="Región de Valparaíso">Región de Valparaíso</ion-select-option>
-          <ion-select-option value="Región Metropolitana">Región Metropolitana</ion-select-option>
-          <ion-select-option value="Región de O’Higgins">Región de O’Higgins</ion-select-option>
-          <ion-select-option value="Región del Maule">Región del Maule</ion-select-option>
-          <ion-select-option value="Región del Ñuble">Región del Ñuble</ion-select-option>
-          <ion-select-option value="Región del Biobío">Región del Biobío</ion-select-option>
-          <ion-select-option value="Región de La Araucanía">Región de La Araucanía</ion-select-option>
-          <ion-select-option value="Región de Los Ríos">Región de Los Ríos</ion-select-option>
-          <ion-select-option value="Región de Los Lagos">Región de Los Lagos</ion-select-option>
-          <ion-select-option value="Región de Aysén">Región de Aysén</ion-select-option>
-          <ion-select-option value="Región de Magallanes">Región de Magallanes</ion-select-option>
+          <ion-select-option value=1>Región de Arica y Parinacota</ion-select-option>
+          <ion-select-option value=2>Región de Tarapacá</ion-select-option>
+          <ion-select-option value=3>Región de Antofagasta</ion-select-option>
+          <ion-select-option value=4>Región de Atacama</ion-select-option>
+          <ion-select-option value=5>Región de Coquimbo</ion-select-option>
+          <ion-select-option value=6>Región de Valparaíso</ion-select-option>
+          <ion-select-option value=7>Región Metropolitana</ion-select-option>
+          <ion-select-option value=8>Región de O’Higgins</ion-select-option>
+          <ion-select-option value=9>Región del Maule</ion-select-option>
+          <ion-select-option value=10>Región del Ñuble</ion-select-option>
+          <ion-select-option value=11>Región del Biobío</ion-select-option>
+          <ion-select-option value=12>Región de La Araucanía</ion-select-option>
+          <ion-select-option value=13>Región de Los Ríos</ion-select-option>
+          <ion-select-option value=14>Región de Los Lagos</ion-select-option>
+          <ion-select-option value=15>Región de Aysén</ion-select-option>
+          <ion-select-option value=16>Región de Magallanes</ion-select-option>
         </ion-select>
       </ion-item>
 
       <!-- Selección de tipo de vehículo -->
       <ion-item>
-        <ion-label>Tipo de Vehículo:</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipoVehiculo" placeholder="Tipo de vehículo" required>
-          <ion-select-option value="Auto">Auto</ion-select-option>
-          <ion-select-option value="Camioneta">Camioneta</ion-select-option>
+        <ion-label>Región:</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipo_vehiculo" placeholder="Selecciona el tipo de vehiculo" required>
+          <ion-select-option value=1>Auto</ion-select-option>
+          <ion-select-option value=2>Camioneta</ion-select-option>
+          <ion-select-option value=3>Motocicleta</ion-select-option>
         </ion-select>
       </ion-item>
 
       <!-- Selección de marca -->
       <ion-item>
-        <ion-label>Marca:</ion-label>
+        <ion-label>Región:</ion-label>
         <ion-select [(ngModel)]="nuevoReporte.marca" name="marca" placeholder="Selecciona una marca" required>
-          <ion-select-option value="Acura">Acura</ion-select-option>
-          <ion-select-option value="Alfa Romeo">Alfa Romeo</ion-select-option>
-          <ion-select-option value="Audi">Audi</ion-select-option>
-          <ion-select-option value="BAIC">BAIC</ion-select-option>
-          <ion-select-option value="BMW">BMW</ion-select-option>
-          <ion-select-option value="Chery">Chery</ion-select-option>
-          <ion-select-option value="Chevrolet">Chevrolet</ion-select-option>
-          <ion-select-option value="Chrysler">Chrysler</ion-select-option>
-          <ion-select-option value="Citroën">Citroën</ion-select-option>
-          <ion-select-option value="Dodge">Dodge</ion-select-option>
-          <ion-select-option value="Fiat">Fiat</ion-select-option>
-          <ion-select-option value="Ford">Ford</ion-select-option>
-          <ion-select-option value="Geely">Geely</ion-select-option>
-          <ion-select-option value="GMC">GMC</ion-select-option>
-          <ion-select-option value="Honda">Honda</ion-select-option>
-          <ion-select-option value="Hyundai">Hyundai</ion-select-option>
-          <ion-select-option value="Infiniti">Infiniti</ion-select-option>
-          <ion-select-option value="Isuzu">Isuzu</ion-select-option>
-          <ion-select-option value="Jaguar">Jaguar</ion-select-option>
-          <ion-select-option value="Jeep">Jeep</ion-select-option>
-          <ion-select-option value="Kia">Kia</ion-select-option>
-          <ion-select-option value="Lamborghini">Lamborghini</ion-select-option>
-          <ion-select-option value="Land Rover">Land Rover</ion-select-option>
-          <ion-select-option value="Lexus">Lexus</ion-select-option>
-          <ion-select-option value="Lincoln">Lincoln</ion-select-option>
-          <ion-select-option value="Mazda">Mazda</ion-select-option>
-          <ion-select-option value="Mercedes-Benz">Mercedes-Benz</ion-select-option>
-          <ion-select-option value="Mitsubishi">Mitsubishi</ion-select-option>
-          <ion-select-option value="Nissan">Nissan</ion-select-option>
-          <ion-select-option value="Peugeot">Peugeot</ion-select-option>
-          <ion-select-option value="Porsche">Porsche</ion-select-option>
-          <ion-select-option value="RAM">RAM</ion-select-option>
-          <ion-select-option value="Renault">Renault</ion-select-option>
-          <ion-select-option value="Seat">Seat</ion-select-option>
-          <ion-select-option value="Skoda">Skoda</ion-select-option>
-          <ion-select-option value="Smart">Smart</ion-select-option>
-          <ion-select-option value="Subaru">Subaru</ion-select-option>
-          <ion-select-option value="Suzuki">Suzuki</ion-select-option>
-          <ion-select-option value="Toyota">Toyota</ion-select-option>
-          <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
-          <ion-select-option value="Volvo">Volvo</ion-select-option>
-          <ion-select-option value="BYD">BYD</ion-select-option>
-          <ion-select-option value="Great Wall">Great Wall</ion-select-option>
-          <ion-select-option value="JAC">JAC</ion-select-option>
-          <ion-select-option value="Mahindra">Mahindra</ion-select-option>
-          <ion-select-option value="MG">MG</ion-select-option>
-          <ion-select-option value="SsangYong">SsangYong</ion-select-option>
-          <ion-select-option value="Tesla">Tesla</ion-select-option>
-          <ion-select-option value="Zhidou">Zhidou</ion-select-option>
-          <ion-select-option value="Zotye">Zotye</ion-select-option>
-          <ion-select-option value="Otro">Otro</ion-select-option>
+          <ion-select-option value=1>Toyota</ion-select-option>
+          <ion-select-option value=2>Chevrolet</ion-select-option>
+          <ion-select-option value=3>Ford</ion-select-option>
+          <ion-select-option value=4>Hyundai</ion-select-option>
+          <ion-select-option value=5>Honda</ion-select-option>
+
         </ion-select>
       </ion-item>
 

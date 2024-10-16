@@ -15,9 +15,9 @@
     <ion-list class="home">
       <ion-item>
         <ion-label>
-          <p>Región: {{ reporte.region }}</p>
-          <p>Tipo de Vehículo: {{ reporte.tipo_vehiculo }}</p>
-          <p>Marca: {{ reporte.marca }}</p>
+          <p>Región: {{ reporte.region?.nombre }}</p>
+          <p>Tipo de Vehículo: {{ reporte.tipo_vehiculo?.tipo }}</p>
+          <p>Marca: {{ reporte.marca?.marca }}</p>
           <p>Modelo: {{ reporte.modelo }}</p>
           <p>Color: {{ reporte.color }}</p>
           <p>Patente: {{ reporte.patente }}</p>

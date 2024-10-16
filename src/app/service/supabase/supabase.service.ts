@@ -45,8 +45,10 @@ export class SupabaseService {
 
   // Métodos específicos para reportes
   getReportes(): Observable<HttpResponse<any>> {
-    return this.get<any>('reporte'); // Usar el método genérico
-  }
+  const params = new HttpParams().set('select', '*, region(*), tipo_vehiculo(*), marca(*)');
+  return this.get<any>('reporte', params); // Usar el método genérico
+}
+
 
   addReporte(reporte: any): Observable<HttpResponse<any>> {
     return this.post<any>('reporte', reporte);
