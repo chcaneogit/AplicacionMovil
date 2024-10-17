@@ -61,8 +61,12 @@ export class EditarPerfilPage implements OnInit {
     this.supabaseService.updateUsuario(this.usuario).subscribe({
       next: async () => {
         await this.presentAlert('Éxito', 'Los cambios han sido guardados.');
-        this.editField = ''; // Resetear el campo editado
-        this.router.navigate(['/dashboard'])
+        this.editField = '';
+
+        // Emitir el usuario actualizado
+        this.autenticacionService.usuarioActualSubject.next(this.usuario);
+
+        this.router.navigate(['/dashboard']);
       },
       error: async (error) => {
         console.error('Error al guardar cambios:', error);
@@ -95,5 +99,4 @@ export class EditarPerfilPage implements OnInit {
 
     await alert.present();
   }
-
 }

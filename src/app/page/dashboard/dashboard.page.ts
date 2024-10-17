@@ -11,19 +11,23 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit, OnDestroy {
-
-  usuario: Usuario | undefined;
+  usuario: Usuario | null = null; // Cambiar a Usuario | null
   private userSubscription: Subscription | undefined;
-  private authSubscription: Subscription | undefined;
 
   constructor(
     private router: Router,
     private _authService: AutenticacionService,
     private _supabaseService: SupabaseService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.cargarUsuario(); // Llama directamente a cargarUsuario al iniciar
+    // Suscribirse al usuario actual para actualizaciones en tiempo real
+    this._authService.obtenerUsuarioActual().subscribe(usuario => {
+      this.usuario = usuario; // Actualiza el usuario en el dashboard
+    });
+
+    // Cargar el usuario al inicio
+    this.cargarUsuario();
   }
 
   cargarUsuario() {
@@ -33,16 +37,16 @@ export class DashboardPage implements OnInit, OnDestroy {
           this.usuario = response[0];
         }, error => {
           console.error('Error al cargar el usuario:', error);
-          this.router.navigate(['/login']); // Redirigir en caso de error
+          this.router.navigate(['/login']);
         });
       } else {
-        this.router.navigate(['/login']); // Redirigir si no hay RUT
+        this.router.navigate(['/login']);
       }
     });
   }
 
-  navegarAEditarPerfil(){
-    this.router.navigate(['/editar-perfil'])
+  navegarAEditarPerfil() {
+    this.router.navigate(['/editar-perfil']);
   }
 
   ngOnDestroy() {
@@ -50,9 +54,5 @@ export class DashboardPage implements OnInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
   }
-
 }
