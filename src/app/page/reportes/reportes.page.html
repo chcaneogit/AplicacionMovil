@@ -15,7 +15,7 @@
       <!-- Selección de región -->
       <ion-item>
         <ion-label>Región:</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.region" name="region" placeholder="Selecciona una región" required>
+        <ion-select [(ngModel)]="nuevoReporte.id_region" name="region" placeholder="Selecciona una región" required>
           <ion-select-option value=1>Región de Arica y Parinacota</ion-select-option>
           <ion-select-option value=2>Región de Tarapacá</ion-select-option>
           <ion-select-option value=3>Región de Antofagasta</ion-select-option>
@@ -37,8 +37,8 @@
 
       <!-- Selección de tipo de vehículo -->
       <ion-item>
-        <ion-label>Región:</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.tipo_vehiculo" name="tipo_vehiculo" placeholder="Selecciona el tipo de vehiculo" required>
+        <ion-label>Tipo de vehiculo:</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.id_tipo_vehiculo" name="tipo_vehiculo" placeholder="Selecciona el tipo de vehiculo" required>
           <ion-select-option value=1>Auto</ion-select-option>
           <ion-select-option value=2>Camioneta</ion-select-option>
           <ion-select-option value=3>Motocicleta</ion-select-option>
@@ -47,8 +47,8 @@
 
       <!-- Selección de marca -->
       <ion-item>
-        <ion-label>Región:</ion-label>
-        <ion-select [(ngModel)]="nuevoReporte.marca" name="marca" placeholder="Selecciona una marca" required>
+        <ion-label>Marca:</ion-label>
+        <ion-select [(ngModel)]="nuevoReporte.id_marca" name="marca" placeholder="Selecciona una marca" required>
           <ion-select-option value=1>Toyota</ion-select-option>
           <ion-select-option value=2>Chevrolet</ion-select-option>
           <ion-select-option value=3>Ford</ion-select-option>

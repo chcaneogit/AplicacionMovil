@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from '../../service/supabase/supabase.service';
 import { AutenticacionService } from '../../service/autenticacion/autenticacion.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ver-reporte',
@@ -29,8 +30,8 @@ export class VerReportePage implements OnInit {
   cargarReportes() {
     if (this.rutUsuario) {
       this.supabaseService.getReportesByUsuario(this.rutUsuario).subscribe({
-        next: (reportes) => {
-          this.reportes = reportes;
+        next: (response: HttpResponse<any>) => {
+          this.reportes = response.body; // Extraer el cuerpo de la respuesta
         },
         error: (err) => {
           console.error('Error al cargar reportes:', err);

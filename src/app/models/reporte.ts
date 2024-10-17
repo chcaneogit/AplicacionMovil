@@ -9,7 +9,7 @@ export interface Reporte {
   modelo: string;
   fecha_publicacion: Date;
   rut_usuario: string;
-  region: Region;
-  tipo_vehiculo: TipoVehiculo;
-  marca: Marca;
+  id_region: Region;
+  id_tipo_vehiculo: TipoVehiculo;
+  id_marca: Marca;
 }

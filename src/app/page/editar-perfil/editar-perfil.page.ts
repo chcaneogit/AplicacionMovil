@@ -3,6 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { Usuario } from 'src/app/models/usuario';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-perfil',
@@ -21,6 +22,7 @@ export class EditarPerfilPage implements OnInit {
   editField: string = '';
 
   constructor(
+    private router: Router,
     private supabaseService: SupabaseService,
     private alertController: AlertController,
     private autenticacionService: AutenticacionService
@@ -60,6 +62,7 @@ export class EditarPerfilPage implements OnInit {
       next: async () => {
         await this.presentAlert('Éxito', 'Los cambios han sido guardados.');
         this.editField = ''; // Resetear el campo editado
+        this.router.navigate(['/dashboard'])
       },
       error: async (error) => {
         console.error('Error al guardar cambios:', error);
@@ -92,4 +95,5 @@ export class EditarPerfilPage implements OnInit {
 
     await alert.present();
   }
+
 }

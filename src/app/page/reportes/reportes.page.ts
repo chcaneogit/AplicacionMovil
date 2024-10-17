@@ -14,12 +14,12 @@ export class ReportesPage implements OnInit {
   reportes: any[] = [];
 
   nuevoReporte = {
-    region: '',
-    tipo_vehiculo: '',
+    id_region: '',
+    id_tipo_vehiculo: '',
     color: '',
     patente: '',
     modelo: '',
-    marca: '',
+    id_marca: '',
     fecha_publicacion: '',
     desconocidoModelo: false,  // Propiedad para el toggle
     desconocidoPatente: false  // Propiedad para el toggle
@@ -68,7 +68,7 @@ export class ReportesPage implements OnInit {
     console.log("Formulario enviado");
 
     // Validar campos vacíos y longitud de campos
-    if (!this.nuevoReporte.region || !this.nuevoReporte.tipo_vehiculo || !this.nuevoReporte.marca ||
+    if (!this.nuevoReporte.id_region || !this.nuevoReporte.id_tipo_vehiculo || !this.nuevoReporte.id_marca ||
       (!this.nuevoReporte.modelo && !this.nuevoReporte.desconocidoModelo) ||
       (!this.nuevoReporte.patente && !this.nuevoReporte.desconocidoPatente) ||
       !this.nuevoReporte.color) {
@@ -95,20 +95,21 @@ export class ReportesPage implements OnInit {
 
         // Crear un nuevo objeto con solo las propiedades que existen en la tabla 'reporte'
         const reporteData = {
-          region: this.nuevoReporte.region,
-          tipo_vehiculo: this.nuevoReporte.tipo_vehiculo,
+          id_region: this.nuevoReporte.id_region,
+          id_tipo_vehiculo: this.nuevoReporte.id_tipo_vehiculo,
           color: this.nuevoReporte.color,
           // Establecer "Desconocido" si el usuario ha marcado el toggle
           patente: this.nuevoReporte.desconocidoPatente ? 'Desconocido' : this.nuevoReporte.patente,
           modelo: this.nuevoReporte.desconocidoModelo ? 'Desconocido' : this.nuevoReporte.modelo,
-          marca: this.nuevoReporte.marca,
+          id_marca: this.nuevoReporte.id_marca,
           fecha_publicacion: this.nuevoReporte.fecha_publicacion,
           rut_usuario: rutUsuario // Incluir el rut del usuario autenticado
         };
 
         // Llamar al servicio de Supabase para agregar el reporte
         this.supabaseService.addReporte(reporteData).subscribe({
-          next: async () => {
+          next: async (response) => {
+            console.log('Respuesta del servidor:', response);
             this.cargarReportes(); // Volver a cargar los reportes después de agregar
             this.resetNuevoReporte(); // Reiniciar el formulario
             await this.presentSuccessAlert('Reporte agregado con éxito.'); // Mostrar mensaje de éxito
@@ -150,9 +151,9 @@ export class ReportesPage implements OnInit {
 
   resetNuevoReporte() {
     this.nuevoReporte = {
-      region: '',
-      tipo_vehiculo: '',
-      marca: '',
+      id_region: '',
+      id_tipo_vehiculo: '',
+      id_marca: '',
       modelo: '', // Reiniciar modelo
       color: '',
       patente: '',

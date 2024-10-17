@@ -54,13 +54,18 @@ export class SupabaseService {
     return this.post<any>('reporte', reporte);
   }
 
-  getReportesByUsuario(rutUsuario: string): Observable<any[]> {
-    const params = new HttpParams().set('rut_usuario', `eq.${rutUsuario}`);
-    return this.http.get<any[]>(`${this.baseUrl}/reporte`, { headers: this.getHeaders(), params })
-      .pipe(
-        catchError(this.handleError) // Manejar errores
-      );
-  }
+  // src/app/service/supabase/supabase.service.ts
+getReportesByUsuario(rutUsuario: string): Observable<HttpResponse<any>> {
+  const params = new HttpParams()
+      .set('rut_usuario', `eq.${rutUsuario}`)
+      .set('select', '*, region(*), tipo_vehiculo(*), marca(*)'); // Incluir las relaciones
+
+  return this.get<any>('reporte', params) // Asegúrate de que la ruta sea correcta
+    .pipe(
+      catchError(this.handleError)
+    );
+}
+
 
   // Métodos específicos para usuarios
   getUsuarios(): Observable<HttpResponse<any>> {
