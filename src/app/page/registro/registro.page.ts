@@ -49,8 +49,7 @@ export class RegistroPage implements OnInit {
         // Procede con el registro
         this.supabaseService.addUsuario(this.nuevo_usuario).subscribe({
           next: async () => {
-            this.resetFormulario();
-            this.router.navigate(['/login']);
+            await this.presentAlert('Registro Exitoso', 'Te has registrado exitosamente.', true);
           },
           error: async (error) => {
             console.error('Error al registrar usuario:', error);
@@ -101,7 +100,7 @@ export class RegistroPage implements OnInit {
       return false;
     }
 
-    return true; // Asegúrate de retornar true al final
+    return true;
   }
 
   private validarRutConDv(rut: number, dv: string): boolean {
@@ -127,7 +126,7 @@ export class RegistroPage implements OnInit {
     return dvEsperado.toUpperCase() === dv.toUpperCase();
   }
 
-  private async presentAlert(header: string, message: string) {
+  private async presentAlert(header: string, message: string, navigateAfter?: boolean) {
     const alert = await this.alertController.create({
       header: header,
       message: message,
@@ -135,16 +134,12 @@ export class RegistroPage implements OnInit {
     });
 
     await alert.present();
+
+    if (navigateAfter) {
+      await alert.onDidDismiss();  
+      this.router.navigate(['/login']);
+    }
   }
 
-  private resetFormulario() {
-    this.nuevo_usuario = {
-      rut: null,
-      dv: '',
-      nombre: '',
-      correo: '',
-      password: '',
-      fecha_nacimiento: '',
-    };
-  }
+ 
 }
