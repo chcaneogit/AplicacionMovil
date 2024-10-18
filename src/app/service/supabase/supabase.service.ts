@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,6 +10,8 @@ import { environment } from 'src/environments/environment';
 export class SupabaseService {
 
   baseUrl = environment.api_url;
+  private reportesSubject = new BehaviorSubject<any[]>([]);
+  reportes$ = this.reportesSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -45,27 +48,46 @@ export class SupabaseService {
 
   // Métodos específicos para reportes
   getReportes(): Observable<HttpResponse<any>> {
-  const params = new HttpParams().set('select', '*, region(*), tipo_vehiculo(*), marca(*)');
-  return this.get<any>('reporte', params); // Usar el método genérico
-}
-
-
-  addReporte(reporte: any): Observable<HttpResponse<any>> {
-    return this.post<any>('reporte', reporte);
+    const params = new HttpParams().set('select', '*, region(*), tipo_vehiculo(*), marca(*)');
+    return this.get<any>('reporte', params).pipe(
+      tap((response) => {
+        this.reportesSubject.next(response.body); // Actualiza el BehaviorSubject
+      }),
+      catchError(this.handleError)
+    );
   }
 
-  // src/app/service/supabase/supabase.service.ts
-getReportesByUsuario(rutUsuario: string): Observable<HttpResponse<any>> {
-  const params = new HttpParams()
+  addReporte(reporte: any): Observable<HttpResponse<any>> {
+    return this.post<any>('reporte', reporte).pipe(
+      tap(() => this.getReportes().subscribe()) // Llama a getReportes para actualizar la lista
+    );
+  }
+
+  getReportesByUsuario(rutUsuario: string): Observable<HttpResponse<any>> {
+    const params = new HttpParams()
       .set('rut_usuario', `eq.${rutUsuario}`)
       .set('select', '*, region(*), tipo_vehiculo(*), marca(*)'); // Incluir las relaciones
 
-  return this.get<any>('reporte', params) // Asegúrate de que la ruta sea correcta
-    .pipe(
+    return this.get<any>('reporte', params).pipe(
       catchError(this.handleError)
     );
-}
+  }
 
+  getReporteById(id_reporte: number): Observable<HttpResponse<any>> {
+    const params = new HttpParams().set('select', '*');
+    return this.get<any>(`reporte?id_reporte=eq.${id_reporte}`, params);
+  }
+
+  updateReporte(reporte: any): Observable<HttpResponse<any>> {
+    const path = `reporte?id_reporte=eq.${reporte.id_reporte}`;
+    return this.http.put<any>(`${this.baseUrl}${path}`, reporte, { headers: this.getHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteReporte(id_reporte: number): Observable<HttpResponse<any>> {
+    return this.http.delete<HttpResponse<any>>(`${this.baseUrl}/reporte?id_reporte=eq.${id_reporte}`, { headers: this.getHeaders(), observe: 'response' })
+      .pipe(catchError(this.handleError));
+  }
 
   // Métodos específicos para usuarios
   getUsuarios(): Observable<HttpResponse<any>> {
@@ -87,12 +109,10 @@ getReportesByUsuario(rutUsuario: string): Observable<HttpResponse<any>> {
     return this.http.get<any>(`${this.baseUrl}/usuario?correo=eq.${correo}`, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+
   updateUsuario(usuario: any): Observable<HttpResponse<any>> {
     const path = `usuario?rut=eq.${usuario.rut}`;
     return this.http.put<any>(`${this.baseUrl}/${path}`, usuario, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
-
 }
-
-

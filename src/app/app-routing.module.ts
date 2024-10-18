@@ -34,8 +34,9 @@ const routes: Routes = [
   {
     path: 'editar-perfil',
     loadChildren: () => import('./page/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
-  },  {
-    path: 'editar-reporte',
+  },
+  {
+    path: 'editar-reporte/:id_reporte', // Añadir el parámetro id_reporte
     loadChildren: () => import('./page/editar-reporte/editar-reporte.module').then( m => m.EditarReportePageModule)
   }
 

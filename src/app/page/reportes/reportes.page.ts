@@ -4,6 +4,7 @@ import { SupabaseService } from '../../service/supabase/supabase.service';
 import { HttpResponse } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { AutenticacionService } from '../../service/autenticacion/autenticacion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reportes',
@@ -28,7 +29,8 @@ export class ReportesPage implements OnInit {
   constructor(
     private supabaseService: SupabaseService,
     private alertController: AlertController,
-    private AutenticacionService: AutenticacionService
+    private AutenticacionService: AutenticacionService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -66,6 +68,7 @@ export class ReportesPage implements OnInit {
     const today = new Date();
     this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0];
     console.log("Formulario enviado");
+    this.router.navigate(['home'])
 
     // Validar campos vacíos y longitud de campos
     if (!this.nuevoReporte.id_region || !this.nuevoReporte.id_tipo_vehiculo || !this.nuevoReporte.id_marca ||
