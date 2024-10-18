@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>FindCar</ion-title>
+    <ion-title>Mis reportes</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -22,8 +22,10 @@
           <p>Color: {{ reporte.color }}</p>
           <p>Patente: {{ reporte.patente }}</p>
         </ion-label>
+        <ion-button [routerLink]="['/editar-reporte', reporte.id_reporte]">Editar</ion-button>
+        <ion-button color="danger" (click)="eliminarReporte(reporte.id_reporte)">Eliminar</ion-button>
+
       </ion-item>
-      <ion-button class="ubi">Ver ubicación</ion-button>
     </ion-list>
   </div>
 </ion-content>

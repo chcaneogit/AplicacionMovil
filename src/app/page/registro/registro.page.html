@@ -13,47 +13,62 @@
 
     <form (ngSubmit)="registrarUsuario()">
       <ion-item>
-        <ion-label>RUT</ion-label>
+        <ion-label>RUT: </ion-label>
         <ion-input
           type="text"
           [(ngModel)]="nuevo_usuario.rut"
           name="rut"
+          placeholder=" Sin puntos ni guión"
           required
         ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Nombre</ion-label>
+        <ion-label>Dígito verificador: </ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="nuevo_usuario.dv"
+          name="dv"
+          placeholder=" Sin guión"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Nombre: </ion-label>
         <ion-input
           type="text"
           [(ngModel)]="nuevo_usuario.nombre"
           name="nombre"
+          placeholder=" Ingrese su nombre"
           required
         ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Correo Electrónico</ion-label>
+        <ion-label>Correo Electrónico: </ion-label>
         <ion-input
           type="email"
           [(ngModel)]="nuevo_usuario.correo"
           name="correo"
+          placeholder=" Ingrese su correo"
           required
         ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Contraseña</ion-label>
+        <ion-label>Contraseña: </ion-label>
         <ion-input
           type="password"
           [(ngModel)]="nuevo_usuario.password"
           name="password"
+          placeholder=" Ingrese su contraseña"
           required
         ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label>Fecha de nacimiento</ion-label>
+        <ion-label>Fecha de nacimiento: </ion-label>
         <ion-input
           type="date"
           [(ngModel)]="nuevo_usuario.fecha_nacimiento"

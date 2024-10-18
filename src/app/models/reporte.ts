@@ -1,9 +1,15 @@
-export interface Reporte{
-  region: string;
-  tipo_vehiculo: string;
+import { Region } from './region';
+import { Marca } from './marca';
+import { TipoVehiculo } from './tipo-vehiculo';
+
+export interface Reporte {
+  id_reporte: number;
   color: string;
   patente: string;
   modelo: string;
-  marca: string;
-  fecha_publicacion: string;
+  fecha_publicacion: Date;
+  rut_usuario: string;
+  id_region: Region;
+  id_tipo_vehiculo: TipoVehiculo;
+  id_marca: Marca;
 }

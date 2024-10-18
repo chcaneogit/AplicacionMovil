@@ -8,23 +8,10 @@ ion-content {
 
 .form-container {
   background-color: #ffffff;
-  max-width: 500px;
+  
   border: 1px solid #000000;
   border-radius: 8px;
   padding: 10px 16px;
   margin: 16px 16PX;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.perfil{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 50%;   /* Asegura que la imagen se ajuste al tamaño del avatar */
-  height: 40%;
-  margin-left: 90px;
-}
-
-.home{
-  background-color: #ffffff;
 }
