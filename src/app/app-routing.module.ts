@@ -1,53 +1,73 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { isAuthenticatedGuard } from './guards/isAuthenticated.guard';
+import { isExpiredTimeGuard } from './guards/timeExpired.guard';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () =>
+      import('./home/home.module').then((m) => m.HomePageModule),
+    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
   },
   {
     path: 'login',
-    loadChildren: () => import('./page/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () =>
+      import('./page/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./page/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () =>
+      import('./page/dashboard/dashboard.module').then(
+        (m) => m.DashboardPageModule
+      ),
   },
   {
     path: 'registro',
-    loadChildren: () => import('./page/registro/registro.module').then( m => m.RegistroPageModule)
+    loadChildren: () =>
+      import('./page/registro/registro.module').then(
+        (m) => m.RegistroPageModule
+      ),
   },
   {
-    path: 'reportes',  // Nueva ruta para Reportes
-    loadChildren: () => import('./page/reportes/reportes.module').then( m => m.ReportesPageModule)
+    path: 'reportes', // Nueva ruta para Reportes
+    loadChildren: () =>
+      import('./page/reportes/reportes.module').then(
+        (m) => m.ReportesPageModule
+      ),
   },
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'ver-reporte',
-    loadChildren: () => import('./page/ver-reporte/ver-reporte.module').then( m => m.VerReportePageModule)
+    loadChildren: () =>
+      import('./page/ver-reporte/ver-reporte.module').then(
+        (m) => m.VerReportePageModule
+      ),
   },
   {
     path: 'editar-perfil',
-    loadChildren: () => import('./page/editar-perfil/editar-perfil.module').then( m => m.EditarPerfilPageModule)
+    loadChildren: () =>
+      import('./page/editar-perfil/editar-perfil.module').then(
+        (m) => m.EditarPerfilPageModule
+      ),
   },
   {
     path: 'editar-reporte/:id_reporte', // Añadir el parámetro id_reporte
-    loadChildren: () => import('./page/editar-reporte/editar-reporte.module').then( m => m.EditarReportePageModule)
-  }
-
-
-
+    loadChildren: () =>
+      import('./page/editar-reporte/editar-reporte.module').then(
+        (m) => m.EditarReportePageModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

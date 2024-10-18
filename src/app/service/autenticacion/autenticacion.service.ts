@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
 import { BehaviorSubject } from 'rxjs';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { Usuario } from 'src/app/models/usuario';
+import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AutenticacionService {
   private usuarioAutenticadoSubject = new BehaviorSubject<boolean>(false);
@@ -34,12 +37,23 @@ export class AutenticacionService {
           console.error('Error al obtener el usuario por RUT:', err);
           this.nombreUsuarioSubject.next(null);
           this.usuarioActualSubject.next(null); // Limpiar si no está autenticado
-        }
+        },
       });
     } else {
       this.nombreUsuarioSubject.next(null);
       this.usuarioActualSubject.next(null); // Limpiar si no está autenticado
     }
+  }
+
+  async isDateExpired(): Promise<boolean> {
+    const userData = await this.getDecryptedUserData();
+    if (userData?.expiration && Date.now() < userData.expiration) {
+      console.log('Usuario dentro del tiempo de expiración');
+      return true; // La sesión es válida si el tiempo actual es menor a la expiración
+    }
+    console.log('Usuario fuera del tiempo de expiración');
+    await this.cerrarSesion(); // Si ya pasó el tiempo, desloguea
+    return false;
   }
 
   // Método para obtener el estado de autenticación
@@ -60,6 +74,22 @@ export class AutenticacionService {
   // Método para obtener el usuario actual
   obtenerUsuarioActual() {
     return this.usuarioActualSubject.asObservable();
+  }
+
+  async getDecryptedUserData() {
+    const { value } = await Preferences.get({ key: 'userData' });
+    if (value) {
+      try {
+        console.log('try');
+        const bytes = CryptoJS.AES.decrypt(value, environment.apiKeySupabase);
+        const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        return decryptedData;
+      } catch (e) {
+        console.log(e);
+        this.cerrarSesion();
+      }
+    }
+    return null;
   }
 
   cerrarSesion() {
