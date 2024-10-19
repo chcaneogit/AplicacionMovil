@@ -11,6 +11,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class AutenticacionService {
   private usuarioAutenticadoSubject = new BehaviorSubject<boolean>(false);
+  public usuarioAutenticado$ = this.usuarioAutenticadoSubject.asObservable(); // Observable para el estado de autenticación
   private rutUsuarioSubject = new BehaviorSubject<string | null>(null);
   private nombreUsuarioSubject = new BehaviorSubject<string | null>(null);
   public usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);

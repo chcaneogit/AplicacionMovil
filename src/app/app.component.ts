@@ -20,13 +20,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Actualizamos el nombre del usuario solo si existe
-    this._authService.obtenerNombreUsuario().subscribe(nombre => {
-      this.usuarioNombre = nombre ? `Hola ${nombre}` : null;
+    // Suscribirse al estado de autenticación
+    this._authService.usuarioAutenticado$.subscribe(estado => {
+      this.usuarioAutenticado = estado; // Actualiza el estado de autenticación
     });
 
-    // Obtenemos el estado de autenticación como un booleano
-    this.usuarioAutenticado = this._authService.estaAutenticado(); // No es necesario usar subscribe
+    // Suscribirse al usuario actual
+    this._authService.usuarioActualSubject.subscribe(usuario => {
+      this.usuarioNombre = usuario ? `Hola ${usuario.nombre}` : null; // Obtiene el nombre del usuario
+    });
   }
 
   irHome() {
