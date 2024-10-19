@@ -3,26 +3,77 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Editar reportes</ion-title>
+    <ion-title>Editar reporte</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content>
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <h2>Editar Reporte</h2>
   <form>
     <ion-item>
-      <ion-label>Color</ion-label>
-      <ion-input [(ngModel)]="reporte.color" name="color"></ion-input>
+      <ion-label>Color: </ion-label>
+      <ion-select [(ngModel)]="reporte.color" name="color" placeholder="Selecciona un color" required>
+        <ion-select-option value="Negro">Negro</ion-select-option>
+        <ion-select-option value="Blanco">Blanco</ion-select-option>
+        <ion-select-option value="Gris">Gris</ion-select-option>
+        <ion-select-option value="Rojo">Rojo</ion-select-option>
+        <ion-select-option value="Azul">Azul</ion-select-option>
+        <ion-select-option value="Verde">Verde</ion-select-option>
+        <ion-select-option value="Amarillo">Amarillo</ion-select-option>
+        <ion-select-option value="Naranjo">Naranjo</ion-select-option>
+        <ion-select-option value="Dorado">Dorado</ion-select-option>
+        <ion-select-option value="Plateado">Plateado</ion-select-option>
+        <ion-select-option value="Morado">Morado</ion-select-option>
+        <ion-select-option value="Celeste">Celeste</ion-select-option>
+        <ion-select-option value="Rosa">Rosa</ion-select-option>
+        <ion-select-option value="Cafe">Café</ion-select-option>
+      </ion-select>
     </ion-item>
+
     <ion-item>
-      <ion-label>Patente</ion-label>
-      <ion-input [(ngModel)]="reporte.patente" name="patente"></ion-input>
+      <ion-label>Patente:</ion-label>
+      <div>
+        <ion-input
+          [(ngModel)]="reporte.patente"
+          name="patente"
+          placeholder="AABB12"
+          [disabled]="reporte.desconocidoPatente"
+          required>
+        </ion-input>
+        <ion-label >Desconocido</ion-label>
+        <ion-toggle
+          [(ngModel)]="reporte.desconocidoPatente"
+          name="desconocido"
+          (ionChange)="onDesconocidoPatente()">
+        </ion-toggle>
+      </div>
     </ion-item>
+
     <ion-item>
-      <ion-label>Modelo</ion-label>
-      <ion-input [(ngModel)]="reporte.modelo" name="modelo"></ion-input>
+      <ion-label>Modelo:</ion-label>
+      <div >
+        <ion-input
+          [(ngModel)]="reporte.modelo"
+          name="modelo"
+          placeholder="Ingrese modelo"
+          [disabled]="reporte.desconocidoModelo"
+          required>
+        </ion-input>
+
+        <ion-toggle
+          [(ngModel)]="reporte.desconocidoModelo"
+          name="desconocido"
+          (ionChange)="onDesconocidoModelo()"><ion-label >Desconocido</ion-label>
+        </ion-toggle>
+
+      </div>
     </ion-item>
   </form>
 
   <ion-button expand="full" (click)="guardarCambios()">Guardar Cambios</ion-button>
+  </div>
 </ion-content>
+
+

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
+import { AlertController } from '@ionic/angular'; // Importar AlertController
+import { Router } from '@angular/router'; // Importar Router para la navegación
 
 @Component({
   selector: 'app-editar-reporte',
@@ -13,10 +15,17 @@ export class EditarReportePage implements OnInit {
   reporte: any = {
     color: '',
     patente: '',
-    modelo: ''
+    modelo: '',
+    desconocidoModelo: false,
+    desconocidoPatente: false
   };
 
-  constructor(private route: ActivatedRoute, private supabaseService: SupabaseService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private supabaseService: SupabaseService,
+    private alertController: AlertController, // Inyectar AlertController
+    private router: Router // Inyectar Router para navegación
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -35,7 +44,15 @@ export class EditarReportePage implements OnInit {
       next: (report: HttpResponse<any>) => {
         if (report.body) {
           this.reporte = report.body;
-          console.log(this.reporte);
+
+          if (this.reporte.modelo === 'Desconocido') {
+            this.reporte.desconocidoModelo = true;
+          }
+
+          if (this.reporte.patente === 'Desconocido') {
+            this.reporte.desconocidoPatente = true;
+          }
+
         } else {
           console.error('No se encontró el reporte');
         }
@@ -46,27 +63,87 @@ export class EditarReportePage implements OnInit {
     });
   }
 
+  onDesconocidoModelo() {
+    if (this.reporte.desconocidoModelo) {
+      this.reporte.modelo = 'Desconocido';
+    } else {
+      this.reporte.modelo = '';
+    }
+  }
+
+  onDesconocidoPatente() {
+    if (this.reporte.desconocidoPatente) {
+      this.reporte.patente = 'Desconocido';
+    } else {
+      this.reporte.patente = '';
+    }
+  }
+
+  // Método para mostrar alertas de éxito o error
+  async mostrarAlerta(mensaje: string, esExito: boolean) {
+    const alert = await this.alertController.create({
+      header: esExito ? 'Éxito' : 'Error',
+      message: mensaje,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            if (esExito) {
+              this.router.navigate(['ver-reporte']); // Cambia esto a la ruta deseada
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  // Validaciones para los campos color, patente y modelo
+  validarCampos(): boolean {
+    if (!this.reporte.color) {
+      this.mostrarAlerta('El campo color es obligatorio', false);
+      return false;
+    }
+
+    if (!this.reporte.desconocidoPatente && !this.reporte.patente) {
+      this.mostrarAlerta('El campo patente es obligatorio o debe seleccionar "Desconocido"', false);
+      return false;
+    }
+
+    if (!this.reporte.desconocidoModelo && !this.reporte.modelo) {
+      this.mostrarAlerta('El campo modelo es obligatorio o debe seleccionar "Desconocido"', false);
+      return false;
+    }
+
+    return true;
+  }
+
   guardarCambios() {
+    if (!this.validarCampos()) {
+      return; // Si las validaciones fallan, no continuar
+    }
+
     if (this.id_reporte) {
       const updatedData = {
         id_reporte: this.id_reporte,
         color: this.reporte.color,
-        patente: this.reporte.patente,
-        modelo: this.reporte.modelo,
+        patente: this.reporte.desconocidoPatente ? 'Desconocido' : this.reporte.patente,
+        modelo: this.reporte.desconocidoModelo ? 'Desconocido' : this.reporte.modelo
       };
 
       this.supabaseService.updateReporte(updatedData).subscribe({
-        next: (response: HttpResponse<any>) => {  // Especifica el tipo de response
+        next: (response: HttpResponse<any>) => {
           console.log('Reporte actualizado:', response);
-          // Puedes agregar una notificación o redirigir al usuario a otra página
+          this.mostrarAlerta('El reporte se actualizó correctamente', true); // Mostrar mensaje de éxito
         },
-        error: (err: any) => {  // Especifica el tipo de err
+        error: (err: any) => {
           console.error('Error al actualizar el reporte:', err);
+          this.mostrarAlerta('Hubo un error al actualizar el reporte', false); // Mostrar mensaje de error
         }
       });
     } else {
       console.error('El ID del reporte es undefined');
     }
   }
-
 }

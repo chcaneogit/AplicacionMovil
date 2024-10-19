@@ -20,14 +20,13 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Actualizamos el nombre del usuario solo si existe
     this._authService.obtenerNombreUsuario().subscribe(nombre => {
       this.usuarioNombre = nombre ? `Hola ${nombre}` : null;
     });
 
-    // Suscribirse al estado de autenticación
-    this._authService.estaAutenticado().subscribe(estado => {
-      this.usuarioAutenticado = estado; // Actualiza la variable local
-    });
+    // Obtenemos el estado de autenticación como un booleano
+    this.usuarioAutenticado = this._authService.estaAutenticado(); // No es necesario usar subscribe
   }
 
   irHome() {
@@ -56,7 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   irRegistroReporte() {
-    this.router.navigate(['/reportes'])
+    this.router.navigate(['/reportes']);
   }
 
   // Método para alternar la visualización del acordeón

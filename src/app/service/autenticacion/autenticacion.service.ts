@@ -13,7 +13,7 @@ export class AutenticacionService {
   private usuarioAutenticadoSubject = new BehaviorSubject<boolean>(false);
   private rutUsuarioSubject = new BehaviorSubject<string | null>(null);
   private nombreUsuarioSubject = new BehaviorSubject<string | null>(null);
-  public usuarioActualSubject = new BehaviorSubject<Usuario | null>(null); // Cambiar a public
+  public usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
 
   constructor(private supabaseService: SupabaseService) {}
 
@@ -45,6 +45,7 @@ export class AutenticacionService {
     }
   }
 
+  // Método para verificar si la sesión ha expirado
   async isDateExpired(): Promise<boolean> {
     const userData = await this.getDecryptedUserData();
     if (userData?.expiration && Date.now() < userData.expiration) {
@@ -56,9 +57,9 @@ export class AutenticacionService {
     return false;
   }
 
-  // Método para obtener el estado de autenticación
-  estaAutenticado() {
-    return this.usuarioAutenticadoSubject.asObservable();
+  // Método para obtener el estado de autenticación (boolean)
+  estaAutenticado(): boolean {
+    return this.usuarioAutenticadoSubject.value; // Devuelve el valor actual
   }
 
   // Método para obtener el RUT del usuario
@@ -76,6 +77,7 @@ export class AutenticacionService {
     return this.usuarioActualSubject.asObservable();
   }
 
+  // Método para desencriptar los datos del usuario almacenados en el dispositivo
   async getDecryptedUserData() {
     const { value } = await Preferences.get({ key: 'userData' });
     if (value) {
@@ -92,6 +94,7 @@ export class AutenticacionService {
     return null;
   }
 
+  // Método para cerrar sesión
   cerrarSesion() {
     this.setAutenticado(false); // Cambiar el estado de autenticación
     this.rutUsuarioSubject.next(null); // Limpiar el RUT al cerrar sesión

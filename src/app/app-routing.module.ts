@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
-    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
+    // canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
   },
   {
     path: 'login',
@@ -37,11 +37,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
-  {
     path: 'ver-reporte',
     loadChildren: () =>
       import('./page/ver-reporte/ver-reporte.module').then(
@@ -56,12 +51,20 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'editar-reporte/:id_reporte', // Añadir el parámetro id_reporte
+    path: 'editar-reporte/:id_reporte',
     loadChildren: () =>
       import('./page/editar-reporte/editar-reporte.module').then(
         (m) => m.EditarReportePageModule
       ),
   },
+  {
+    path: 'ver-ubicacion',
+    loadChildren: () =>
+      import('./page/ver-ubicacion/ver-ubicacion.module').then(
+        (m) => m.VerUbicacionPageModule
+      ),
+  }
+
 ];
 
 @NgModule({
