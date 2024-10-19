@@ -58,6 +58,13 @@ export class EditarPerfilPage implements OnInit {
       return;
     }
 
+    // Verificar si el correo ya existe
+    const existeCorreo = await this.verificarCorreoExistente(this.usuario.correo);
+    if (existeCorreo) {
+      await this.presentAlert('Error de validación', 'El correo ya está registrado por otro usuario.');
+      return;
+    }
+
     this.supabaseService.updateUsuario(this.usuario).subscribe({
       next: async () => {
         await this.presentAlert('Éxito', 'Los cambios han sido guardados.');
@@ -72,6 +79,23 @@ export class EditarPerfilPage implements OnInit {
         console.error('Error al guardar cambios:', error);
         await this.presentAlert('Error', 'No se pudieron guardar los cambios.');
       }
+    });
+  }
+
+  private async verificarCorreoExistente(correo: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.supabaseService.getUsuarioByCorreo(correo).subscribe((response: any) => {
+        if (response && response.length > 0) {
+          // Si hay usuarios que tienen el mismo correo, retornar true
+          resolve(true);
+        } else {
+          // No hay usuarios con el mismo correo
+          resolve(false);
+        }
+      }, (error) => {
+        console.error('Error al verificar el correo:', error);
+        resolve(false); // En caso de error, asumimos que el correo no existe
+      });
     });
   }
 
