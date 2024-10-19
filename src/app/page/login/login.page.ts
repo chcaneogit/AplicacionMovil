@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { AlertController } from '@ionic/angular';
 import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { environment } from 'src/environments/environment';
+import { Preferences } from '@capacitor/preferences';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +15,8 @@ import { AutenticacionService } from 'src/app/service/autenticacion/autenticacio
 export class LoginPage implements OnInit {
   correo: string = "";
   password: string = "";
+
+  private sessionDuration = 1 * 60 * 1000;
 
   constructor(
     private supabaseService: SupabaseService,
@@ -29,6 +34,13 @@ export class LoginPage implements OnInit {
           const usuarioData = usuario[0];
           if (usuarioData && usuarioData.password === password) { // Verificar que usuarioData esté definido
             console.info("Usuario Existe");
+            const expiration = Date.now() + this.sessionDuration;
+            const userData = { expiration };
+            const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(userData), environment.apiKeySupabase ).toString();
+            await Preferences.set({
+              key: 'userData',
+              value: encryptedData,
+            });
             this._authService.setAutenticado(true, usuarioData.rut); // Establece el estado de autenticación y el RUT
             this.router.navigate(['home'], {
               state: {

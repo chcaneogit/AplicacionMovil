@@ -6,7 +6,8 @@ export const isAuthenticatedGuard: CanActivateFn = async (route, state) => {
   const _authService = inject(AutenticacionService);
   const router = inject(Router);
 
-  const userInfo = await _authService.getDecryptedUserData();
+  const userInfo = await _authService.estaAutenticado();
+  console.log("USER",_authService.obtenerUsuarioActual())
 
   if (userInfo) {
     return true;

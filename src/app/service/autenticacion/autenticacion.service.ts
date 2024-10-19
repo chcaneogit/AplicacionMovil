@@ -81,6 +81,7 @@ export class AutenticacionService {
   // Método para desencriptar los datos del usuario almacenados en el dispositivo
   async getDecryptedUserData() {
     const { value } = await Preferences.get({ key: 'userData' });
+    console.log("VALUE", value)
     if (value) {
       try {
         console.log('try');

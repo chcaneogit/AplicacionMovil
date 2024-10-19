@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
-    // canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
+      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
   },
   {
     path: 'login',
@@ -35,6 +35,7 @@ const routes: Routes = [
       import('./page/reportes/reportes.module').then(
         (m) => m.ReportesPageModule
       ),
+      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
   },
   {
     path: 'ver-reporte',
@@ -42,6 +43,7 @@ const routes: Routes = [
       import('./page/ver-reporte/ver-reporte.module').then(
         (m) => m.VerReportePageModule
       ),
+    canActivate: [isExpiredTimeGuard],
   },
   {
     path: 'editar-perfil',
@@ -49,6 +51,7 @@ const routes: Routes = [
       import('./page/editar-perfil/editar-perfil.module').then(
         (m) => m.EditarPerfilPageModule
       ),
+    canActivate: [isExpiredTimeGuard],
   },
   {
     path: 'editar-reporte/:id_reporte',
@@ -56,6 +59,7 @@ const routes: Routes = [
       import('./page/editar-reporte/editar-reporte.module').then(
         (m) => m.EditarReportePageModule
       ),
+    canActivate: [isExpiredTimeGuard],
   },
   {
     path: 'ver-ubicacion',
@@ -63,6 +67,7 @@ const routes: Routes = [
       import('./page/ver-ubicacion/ver-ubicacion.module').then(
         (m) => m.VerUbicacionPageModule
       ),
+    canActivate: [isExpiredTimeGuard],
   }
 
 ];
