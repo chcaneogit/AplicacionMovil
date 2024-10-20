@@ -67,9 +67,19 @@ export class VerReportePage implements OnInit {
           text: 'Eliminar',
           handler: () => {
             this.supabaseService.deleteReporte(id_reporte).subscribe({
-              next: (response) => {
+              next: async (response) => {
                 console.log('Reporte eliminado:', response);
-                this.router.navigate(['home'])
+
+                // Mostrar mensaje de éxito
+                const successAlert = await this.alertController.create({
+                  header: 'Éxito',
+                  message: 'El reporte ha sido eliminado con éxito.',
+                  buttons: ['OK']
+                });
+                await successAlert.present();
+
+                // Redirigir después de la eliminación
+                this.router.navigate(['home']);
               },
               error: (err) => {
                 console.error('Error al eliminar el reporte:', err);

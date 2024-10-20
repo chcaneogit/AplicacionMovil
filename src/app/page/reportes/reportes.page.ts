@@ -151,6 +151,10 @@ export class ReportesPage implements OnInit {
     await alert.present();
   }
 
+  cancelar(){
+    this.router.navigate(['/home'])
+  }
+
   resetNuevoReporte() {
     this.nuevoReporte = {
       id_region: '',

@@ -13,6 +13,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
+
   },
   {
     path: 'login',
@@ -22,8 +23,9 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./page/dashboard/dashboard.module').then((m) => m.DashboardPageModule),
-    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
+      import('./page/dashboard/dashboard.module').then(
+        (m) => m.DashboardPageModule
+      ),
   },
   {
     path: 'registro',
@@ -38,7 +40,7 @@ const routes: Routes = [
       import('./page/reportes/reportes.module').then(
         (m) => m.ReportesPageModule
       ),
-    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
+      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
   },
   {
     path: 'ver-reporte',
@@ -72,6 +74,7 @@ const routes: Routes = [
       ),
     canActivate: [isExpiredTimeGuard],
   }
+
 ];
 
 @NgModule({

@@ -1,17 +1,24 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 import { AutenticacionService } from '../service/autenticacion/autenticacion.service';
 
-export const isExpiredTimeGuard: CanActivateFn = async (route, state) => {
-  const _authService = inject(AutenticacionService);
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root',
+})
+export class isExpiredTimeGuard implements CanActivate {
+  constructor(
+    private authService: AutenticacionService,
+    private router: Router
+  ) {}
 
-  const userTimeExpired = await _authService.isDateExpired();
-
-  if (userTimeExpired) {
-    return true;
+  async canActivate(): Promise<boolean> {
+    const expired = await this.authService.isDateExpired();
+    if (!expired) {
+      return true;
+    } else {
+      this.authService.cerrarSesion();
+      this.router.navigate(['/login']);
+      return false;
+    }
   }
-
-  router.navigate(['/login']);
-  return false;
-};
+}
