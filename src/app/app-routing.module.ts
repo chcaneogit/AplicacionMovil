@@ -5,10 +5,14 @@ import { isExpiredTimeGuard } from './guards/timeExpired.guard';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
     path: 'home',
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
-      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
   },
   {
     path: 'login',
@@ -18,9 +22,8 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./page/dashboard/dashboard.module').then(
-        (m) => m.DashboardPageModule
-      ),
+      import('./page/dashboard/dashboard.module').then((m) => m.DashboardPageModule),
+    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
   },
   {
     path: 'registro',
@@ -35,7 +38,7 @@ const routes: Routes = [
       import('./page/reportes/reportes.module').then(
         (m) => m.ReportesPageModule
       ),
-      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
+    canActivate: [isAuthenticatedGuard, isExpiredTimeGuard],
   },
   {
     path: 'ver-reporte',
@@ -69,7 +72,6 @@ const routes: Routes = [
       ),
     canActivate: [isExpiredTimeGuard],
   }
-
 ];
 
 @NgModule({

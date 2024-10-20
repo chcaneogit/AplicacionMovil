@@ -1,22 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { Usuario } from 'src/app/models/usuario';
 import { environment } from 'src/environments/environment';
 import * as CryptoJS from 'crypto-js';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutenticacionService {
   private usuarioAutenticadoSubject = new BehaviorSubject<boolean>(false);
-  public usuarioAutenticado$ = this.usuarioAutenticadoSubject.asObservable(); // Observable para el estado de autenticación
+  public usuarioAutenticado$ = this.usuarioAutenticadoSubject.asObservable();
   private rutUsuarioSubject = new BehaviorSubject<string | null>(null);
   private nombreUsuarioSubject = new BehaviorSubject<string | null>(null);
   public usuarioActualSubject = new BehaviorSubject<Usuario | null>(null);
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private router: Router // Inyectamos el Router para redirigir al usuario
+  ) {}
 
   // Método para establecer el estado de autenticación y emitir el usuario
   setAutenticado(estado: boolean, rut: string | null = null) {
@@ -28,21 +32,21 @@ export class AutenticacionService {
         next: (usuario) => {
           if (usuario && usuario.length > 0) {
             this.nombreUsuarioSubject.next(usuario[0].nombre);
-            this.usuarioActualSubject.next(usuario[0]); // Emitir el usuario actual
+            this.usuarioActualSubject.next(usuario[0]);
           } else {
             this.nombreUsuarioSubject.next(null);
-            this.usuarioActualSubject.next(null); // Limpiar si no hay usuario
+            this.usuarioActualSubject.next(null);
           }
         },
         error: (err) => {
           console.error('Error al obtener el usuario por RUT:', err);
           this.nombreUsuarioSubject.next(null);
-          this.usuarioActualSubject.next(null); // Limpiar si no está autenticado
+          this.usuarioActualSubject.next(null);
         },
       });
     } else {
       this.nombreUsuarioSubject.next(null);
-      this.usuarioActualSubject.next(null); // Limpiar si no está autenticado
+      this.usuarioActualSubject.next(null);
     }
   }
 
@@ -51,11 +55,11 @@ export class AutenticacionService {
     const userData = await this.getDecryptedUserData();
     if (userData?.expiration && Date.now() < userData.expiration) {
       console.log('Usuario dentro del tiempo de expiración');
-      return true; // La sesión es válida si el tiempo actual es menor a la expiración
+      return false; // La sesión es válida si el tiempo actual es menor a la expiración
     }
     console.log('Usuario fuera del tiempo de expiración');
     await this.cerrarSesion(); // Si ya pasó el tiempo, desloguea
-    return false;
+    return true;
   }
 
   // Método para obtener el estado de autenticación (boolean)
@@ -64,32 +68,30 @@ export class AutenticacionService {
   }
 
   // Método para obtener el RUT del usuario
-  obtenerRutUsuario() {
+  obtenerRutUsuario(): Observable<string | null> {
     return this.rutUsuarioSubject.asObservable();
   }
 
   // Método para obtener el nombre del usuario
-  obtenerNombreUsuario() {
+  obtenerNombreUsuario(): Observable<string | null> {
     return this.nombreUsuarioSubject.asObservable(); // Retorna un Observable del nombre
   }
 
   // Método para obtener el usuario actual
-  obtenerUsuarioActual() {
+  obtenerUsuarioActual(): Observable<Usuario | null> {
     return this.usuarioActualSubject.asObservable();
   }
 
   // Método para desencriptar los datos del usuario almacenados en el dispositivo
   async getDecryptedUserData() {
     const { value } = await Preferences.get({ key: 'userData' });
-    console.log("VALUE", value)
     if (value) {
       try {
-        console.log('try');
         const bytes = CryptoJS.AES.decrypt(value, environment.apiKeySupabase);
         const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
         return decryptedData;
       } catch (e) {
-        console.log(e);
+        console.error(e);
         this.cerrarSesion();
       }
     }
@@ -97,10 +99,14 @@ export class AutenticacionService {
   }
 
   // Método para cerrar sesión
-  cerrarSesion() {
+  async cerrarSesion() {
     this.setAutenticado(false); // Cambiar el estado de autenticación
     this.rutUsuarioSubject.next(null); // Limpiar el RUT al cerrar sesión
     this.nombreUsuarioSubject.next(null); // Limpiar el nombre al cerrar sesión
     this.usuarioActualSubject.next(null); // Limpiar el usuario actual
+    await Preferences.remove({ key: 'userData' }); // Limpiar los datos del usuario del almacenamiento
+
+    // Redirigir al usuario a la página de inicio de sesión
+    this.router.navigate(['/login']);
   }
 }

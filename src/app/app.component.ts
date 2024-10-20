@@ -1,34 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutenticacionService } from './service/autenticacion/autenticacion.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { InactivityService } from './service/inactivity/inactivity.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   usuarioNombre: string | null = null;
-  usuarioAutenticado: boolean = false; // Variable para almacenar el estado de autenticación
-
-  // Propiedades para el acordeón
+  usuarioAutenticado: boolean = false;
   mostrarReportes: boolean = false;
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private _authService: AutenticacionService,
+    private inactivityService: InactivityService, // Asegúrate de inyectar el servicio de inactividad
     private router: Router,
   ) {}
 
   ngOnInit() {
-    // Suscribirse al estado de autenticación
-    this._authService.usuarioAutenticado$.subscribe(estado => {
-      this.usuarioAutenticado = estado; // Actualiza el estado de autenticación
-    });
+    this._authService.usuarioAutenticado$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(estado => {
+        this.usuarioAutenticado = estado;
+      });
 
-    // Suscribirse al usuario actual
-    this._authService.usuarioActualSubject.subscribe(usuario => {
-      this.usuarioNombre = usuario ? `Hola ${usuario.nombre}` : null; // Obtiene el nombre del usuario
-    });
+    this._authService.usuarioActualSubject
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(usuario => {
+        this.usuarioNombre = usuario ? `Hola ${usuario.nombre}` : null;
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   irHome() {
@@ -60,7 +71,6 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/reportes']);
   }
 
-  // Método para alternar la visualización del acordeón
   toggleReportes() {
     this.mostrarReportes = !this.mostrarReportes;
   }

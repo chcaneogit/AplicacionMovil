@@ -4,7 +4,6 @@ import { AutenticacionService } from '../service/autenticacion/autenticacion.ser
 
 export const isExpiredTimeGuard: CanActivateFn = async (route, state) => {
   const _authService = inject(AutenticacionService);
-
   const router = inject(Router);
 
   const userTimeExpired = await _authService.isDateExpired();
