@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
-import { AlertController } from '@ionic/angular'; // Importar AlertController
-import { Router } from '@angular/router'; // Importar Router para la navegación
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-reporte',
@@ -23,8 +23,8 @@ export class EditarReportePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private supabaseService: SupabaseService,
-    private alertController: AlertController, // Inyectar AlertController
-    private router: Router // Inyectar Router para navegación
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -89,7 +89,7 @@ export class EditarReportePage implements OnInit {
           text: 'OK',
           handler: () => {
             if (esExito) {
-              this.router.navigate(['ver-reporte']); // Cambia esto a la ruta deseada
+              this.router.navigate(['ver-reporte']);
             }
           }
         }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { AlertController } from '@ionic/angular';
-import { Router } from '@angular/router'; // Importar Router
+import { Router } from '@angular/router';
 import { AutenticacionService } from '../service/autenticacion/autenticacion.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
     private supabaseService: SupabaseService,
     private autenticacionService: AutenticacionService,
     private alertController: AlertController,
-    private router: Router // Inyectar Router
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
 
       await alert.present();
     } else {
-      // Navegar a la página de ver-ubicacion
+
       this.router.navigate(['/ver-ubicacion']);
     }
   }

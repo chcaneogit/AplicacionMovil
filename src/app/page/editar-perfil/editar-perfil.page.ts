@@ -37,7 +37,7 @@ export class EditarPerfilPage implements OnInit {
       if (rut) {
         this.supabaseService.getUsuarioByRut(+rut).subscribe((response: any) => {
           if (response && response.length > 0) {
-            this.usuario = response[0]; // Ajusta según la estructura de tu respuesta
+            this.usuario = response[0];
           }
         });
       }

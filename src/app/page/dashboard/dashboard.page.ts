@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit, OnDestroy {
-  usuario: Usuario | null = null; // Cambiar a Usuario | null
+  usuario: Usuario | null = null;
   private userSubscription: Subscription | undefined;
 
   constructor(

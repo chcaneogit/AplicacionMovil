@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AutenticacionService,
-    private inactivityService: InactivityService, // Asegúrate de inyectar el servicio de inactividad
+    private inactivityService: InactivityService,
     private router: Router,
   ) {}
 

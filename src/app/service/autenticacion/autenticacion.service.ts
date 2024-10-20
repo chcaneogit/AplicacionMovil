@@ -19,7 +19,7 @@ export class AutenticacionService {
 
   constructor(
     private supabaseService: SupabaseService,
-    private router: Router // Inyectamos el Router para redirigir al usuario
+    private router: Router
   ) {}
 
   // Método para establecer el estado de autenticación y emitir el usuario

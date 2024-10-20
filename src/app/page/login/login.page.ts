@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
   }
 
   validatePassword(inputPassword: string, storedPassword: string): boolean {
-    // Implementar la lógica de comparación aquí, usando hashing si es posible
+
     return inputPassword === storedPassword;
   }
 
