@@ -67,7 +67,7 @@ export class ReportesPage implements OnInit {
     const today = new Date();
     this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0];
     console.log("Formulario enviado");
-    this.router.navigate(['home'])
+
 
     // Validar campos vacíos y longitud de campos
     if (!this.nuevoReporte.id_region || !this.nuevoReporte.id_tipo_vehiculo || !this.nuevoReporte.id_marca ||
