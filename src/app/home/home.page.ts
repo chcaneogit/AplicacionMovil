@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AutenticacionService } from '../service/autenticacion/autenticacion.service';
 
 @Component({
   selector: 'app-home',
@@ -7,27 +10,43 @@ import { SupabaseService } from 'src/app/service/supabase/supabase.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  reportes: any[] = []; // Almacena los reportes
+  reportes: any[] = [];
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private autenticacionService: AutenticacionService,
+    private alertController: AlertController,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    // Obtener los reportes desde Supabase
     this.supabaseService.getReportes().subscribe({
       next: (response) => {
-        // Maneja la respuesta aquí
         if (response.body) {
-          this.reportes = response.body; // Almacena los reportes
+          this.reportes = response.body;
           console.log('Reportes obtenidos:', this.reportes);
         }
       },
       error: (err) => {
-        console.error('Error al obtener reportes:', err); // Manejar el error
+        console.error('Error al obtener reportes:', err);
       }
     });
   }
 
-  verificarReportes() {
-    console.log('Reportes en HomePage:', this.reportes); // Muestra los reportes en la consola al hacer clic en el botón
+
+  async verificarReportes() {
+    if (!this.autenticacionService.estaAutenticado()) {
+      const alert = await this.alertController.create({
+        header: 'Acceso Denegado',
+        message: 'Debe iniciar sesión para poder ver la ubicación.',
+        buttons: ['OK']
+      });
+
+      await alert.present();
+    } else {
+
+      this.router.navigate(['/ver-ubicacion']);
+    }
   }
+
 }

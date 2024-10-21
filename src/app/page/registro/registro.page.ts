@@ -46,14 +46,28 @@ export class RegistroPage implements OnInit {
           return;
         }
 
-        // Procede con el registro
-        this.supabaseService.addUsuario(this.nuevo_usuario).subscribe({
-          next: async () => {
-            await this.presentAlert('Registro Exitoso', 'Te has registrado exitosamente.', true);
+        // Verificar si el correo ya existe en la base de datos
+        this.supabaseService.getUsuarioByCorreo(this.nuevo_usuario.correo).subscribe({
+          next: async (resultados) => {
+            if (resultados && resultados.length > 0) {
+              await this.presentAlert('Error de registro', 'El correo ya está registrado en el sistema.');
+              return;
+            }
+
+            // Procede con el registro
+            this.supabaseService.addUsuario(this.nuevo_usuario).subscribe({
+              next: async () => {
+                await this.presentAlert('Registro Exitoso', 'Te has registrado exitosamente.', true);
+              },
+              error: async (error) => {
+                console.error('Error al registrar usuario:', error);
+                await this.presentAlert('Error al registrar usuario', 'Por favor, intenta nuevamente.');
+              }
+            });
           },
           error: async (error) => {
-            console.error('Error al registrar usuario:', error);
-            await this.presentAlert('Error al registrar usuario', 'Por favor, intenta nuevamente.');
+            console.error('Error al verificar correo:', error);
+            await this.presentAlert('Error al verificar correo', 'Por favor, intenta nuevamente.');
           }
         });
       },
@@ -136,10 +150,8 @@ export class RegistroPage implements OnInit {
     await alert.present();
 
     if (navigateAfter) {
-      await alert.onDidDismiss();  
+      await alert.onDidDismiss();
       this.router.navigate(['/login']);
     }
   }
-
- 
 }

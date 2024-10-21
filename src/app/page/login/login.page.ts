@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
 import { AlertController } from '@ionic/angular';
 import { AutenticacionService } from 'src/app/service/autenticacion/autenticacion.service';
+import { environment } from 'src/environments/environment';
+import { Preferences } from '@capacitor/preferences';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -17,23 +20,33 @@ export class LoginPage implements OnInit {
     private supabaseService: SupabaseService,
     private router: Router,
     private alertController: AlertController,
-    private _authService: AutenticacionService // Inyectar el servicio de autenticación
+    private _authService: AutenticacionService
   ) { }
 
   ngOnInit() { }
 
+  resetForm() {
+    this.correo = '';
+    this.password = '';
+  }
+
   login(correo: string, password: string) {
     this.supabaseService.getUsuarioByCorreo(correo).subscribe({
       next: async (usuario) => {
-        if (usuario && usuario.length > 0) { // Verificar que el arreglo no esté vacío
+        if (usuario && usuario.length > 0) {
           const usuarioData = usuario[0];
-          if (usuarioData && usuarioData.password === password) { // Verificar que usuarioData esté definido
+          if (usuarioData && this.validatePassword(password, usuarioData.password)) { // Verificar la contraseña
             console.info("Usuario Existe");
-            this._authService.setAutenticado(true, usuarioData.rut); // Establece el estado de autenticación y el RUT
+            const userData = { expiration: Date.now() + 1 * 60 * 1000 };
+            const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(userData), environment.apiKeySupabase).toString();
+            await Preferences.set({
+              key: 'userData',
+              value: encryptedData,
+            });
+            this._authService.setAutenticado(true, usuarioData.rut);
+            this.resetForm();
             this.router.navigate(['home'], {
-              state: {
-                usuario: correo
-              }
+              state: { usuario: correo }
             });
           } else {
             console.error("Contraseña incorrecta");
@@ -51,7 +64,13 @@ export class LoginPage implements OnInit {
     });
   }
 
+  validatePassword(inputPassword: string, storedPassword: string): boolean {
+
+    return inputPassword === storedPassword;
+  }
+
   irRegistro() {
+    this.resetForm();
     this.router.navigate(['/registro']);
   }
 

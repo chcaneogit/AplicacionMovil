@@ -1,4 +1,3 @@
-// src/app/page/reportes/reportes.page.ts
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from '../../service/supabase/supabase.service';
 import { HttpResponse } from '@angular/common/http';
@@ -40,7 +39,7 @@ export class ReportesPage implements OnInit {
   cargarReportes() {
     this.supabaseService.getReportes().subscribe({
       next: (response: HttpResponse<any>) => {
-        this.reportes = response.body; // Asumimos que los datos vienen en el body
+        this.reportes = response.body;
       },
       error: (err) => {
         console.error('Error al cargar reportes:', err);
@@ -68,7 +67,7 @@ export class ReportesPage implements OnInit {
     const today = new Date();
     this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0];
     console.log("Formulario enviado");
-    this.router.navigate(['home'])
+
 
     // Validar campos vacíos y longitud de campos
     if (!this.nuevoReporte.id_region || !this.nuevoReporte.id_tipo_vehiculo || !this.nuevoReporte.id_marca ||
@@ -152,12 +151,16 @@ export class ReportesPage implements OnInit {
     await alert.present();
   }
 
+  cancelar(){
+    this.router.navigate(['/home'])
+  }
+
   resetNuevoReporte() {
     this.nuevoReporte = {
       id_region: '',
       id_tipo_vehiculo: '',
       id_marca: '',
-      modelo: '', // Reiniciar modelo
+      modelo: '',
       color: '',
       patente: '',
       fecha_publicacion: '',
