@@ -114,8 +114,35 @@ export class RegistroPage implements OnInit {
       return false;
     }
 
-    return true;
+   
+   // Validación de edad mínima
+   if (!this.esMayorDeEdad(this.nuevo_usuario.fecha_nacimiento)) {
+    this.presentAlert('Error de validación', 'Debes tener al menos 18 años para registrarte.');
+    return false;
   }
+
+  return true;
+}
+
+private esMayorDeEdad(fechaNacimiento: string): boolean {
+  const fechaNacimientoDate = new Date(fechaNacimiento);
+  const fechaActual = new Date();
+
+  // Calcula la diferencia de años entre la fecha de nacimiento y la fecha actual
+  let edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
+
+  // Ajusta la edad si el cumpleaños de este año aún no ha pasado
+  if (
+    fechaActual.getMonth() < fechaNacimientoDate.getMonth() || 
+    (fechaActual.getMonth() === fechaNacimientoDate.getMonth() && fechaActual.getDate() < fechaNacimientoDate.getDate())
+  ) {
+      edad--;
+  }
+
+  // Retorna true si la edad es 18 o más, de lo contrario false
+  return edad >= 18;
+}
+
 
   private validarRutConDv(rut: number, dv: string): boolean {
     let suma = 0;
