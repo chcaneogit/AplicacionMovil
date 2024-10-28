@@ -114,39 +114,35 @@ export class RegistroPage implements OnInit {
       return false;
     }
 
-  // Validación de fecha de nacimiento (no debe ser futura)
-  const fechaNacimientoDate = new Date(this.nuevo_usuario.fecha_nacimiento);
-  const fechaActual = new Date();
+    if (!this.esMayorDeEdad(this.nuevo_usuario.fecha_nacimiento)) {
+      this.presentAlert('Error de validación', 'Debes tener entre 18 y 100 años para registrarte.');
+      return false;
+    }
 
-  if (fechaNacimientoDate > fechaActual) {
-    this.presentAlert('Error de validación', 'La fecha de nacimiento no puede ser posterior a la fecha actual.');
-    return false;
+    return true;
   }
 
-  // Validación de edad mínima de 18 años
-  if (!this.esMayorDeEdad(this.nuevo_usuario.fecha_nacimiento)) {
-    this.presentAlert('Error de validación', 'Debes tener al menos 18 años para registrarte.');
-    return false;
+  private esMayorDeEdad(fechaNacimiento: string): boolean {
+    const fechaNacimientoDate = new Date(fechaNacimiento);
+    const fechaActual = new Date();
+
+    // Validar que la fecha no sea futura
+    if (fechaNacimientoDate > fechaActual) {
+      this.presentAlert('Error de validación', 'La fecha de nacimiento no puede ser futura.');
+      return false;
+    }
+
+    const edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
+
+    // Ajuste si el cumpleaños aún no ha ocurrido este año
+    if (
+      fechaActual.getMonth() < fechaNacimientoDate.getMonth() ||
+      (fechaActual.getMonth() === fechaNacimientoDate.getMonth() && fechaActual.getDate() < fechaNacimientoDate.getDate())
+    ) {
+      return edad - 1 >= 18 && edad - 1 <= 100;
+    }
+    return edad >= 18 && edad <= 100;
   }
-
-  return true;
-}
-
-private esMayorDeEdad(fechaNacimiento: string): boolean {
-  const fechaNacimientoDate = new Date(fechaNacimiento);
-  const fechaActual = new Date();
-  let edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
-
-  // Ajuste si el cumpleaños aún no ha ocurrido este año
-  if (
-    fechaActual.getMonth() < fechaNacimientoDate.getMonth() ||
-    (fechaActual.getMonth() === fechaNacimientoDate.getMonth() && fechaActual.getDate() < fechaNacimientoDate.getDate())
-  ) {
-    edad--;
-  }
-  
-  return edad >= 18;
-}
 
   private validarRutConDv(rut: number, dv: string): boolean {
     let suma = 0;
