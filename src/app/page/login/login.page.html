@@ -22,9 +22,11 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" [(ngModel)]="password" required></ion-input>
+        <ion-input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" required></ion-input>
+        <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+          <ion-icon [name]="passwordVisible ? 'eye-off' : 'eye'"></ion-icon>
+        </ion-button>
       </ion-item>
-
       <ion-button expand="block" type="submit" (click)="login(correo, password)">Login</ion-button>
 
 

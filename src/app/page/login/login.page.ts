@@ -15,6 +15,7 @@ import * as CryptoJS from 'crypto-js';
 export class LoginPage implements OnInit {
   correo: string = "";
   password: string = "";
+  passwordVisible: boolean = false;  // Nueva variable para controlar visibilidad
 
   constructor(
     private supabaseService: SupabaseService,
@@ -24,6 +25,11 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() { }
+
+    // Método para alternar la visibilidad de la contraseña
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
+    }
 
   resetForm() {
     this.correo = '';
