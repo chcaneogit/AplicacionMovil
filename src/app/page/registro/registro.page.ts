@@ -113,9 +113,29 @@ export class RegistroPage implements OnInit {
       this.presentAlert('Error de validación', 'Por favor, ingresa un correo electrónico válido.');
       return false;
     }
+ // Validación de edad mínima
+ if (!this.esMayorDeEdad(this.nuevo_usuario.fecha_nacimiento)) {
+  this.presentAlert('Error de validación', 'Debes tener al menos 18 años para registrarte.');
+  return false;
+}
 
-    return true;
-  }
+return true;
+}
+
+private esMayorDeEdad(fechaNacimiento: string): boolean {
+const fechaNacimientoDate = new Date(fechaNacimiento);
+const fechaActual = new Date();
+const edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
+
+// Ajusta si el cumpleaños aún no ha ocurrido este año
+if (
+  fechaActual.getMonth() < fechaNacimientoDate.getMonth() ||
+  (fechaActual.getMonth() === fechaNacimientoDate.getMonth() && fechaActual.getDate() < fechaNacimientoDate.getDate())
+) {
+  return edad - 1 >= 18;
+}
+return edad >= 18;
+}
 
   private validarRutConDv(rut: number, dv: string): boolean {
     let suma = 0;
