@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { createClient } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class SupabaseService {
   baseUrl = environment.api_url;
   private reportesSubject = new BehaviorSubject<any[]>([]);
   reportes$ = this.reportesSubject.asObservable();
+  private supabase = createClient(environment.storage_url, environment.apiKeySupabase); // Cliente de Supabase
 
   constructor(private http: HttpClient) { }
 
@@ -115,4 +117,34 @@ export class SupabaseService {
     return this.http.put<any>(`${this.baseUrl}/${path}`, usuario, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError));
   }
+
+  // Método para subir un archivo al storage
+  async uploadFile(filePath: string, fileBlob: Blob): Promise<any> {
+    try {
+      const { data, error } = await this.supabase.storage
+        .from('fotos') // Nombre del bucket
+        .upload(filePath, fileBlob, { upsert: true }); // upsert: true permite sobrescribir si el archivo ya existe
+
+      if (error) {
+        throw new Error(`Error al subir el archivo: ${error.message}`);
+      }
+
+      return data?.path; // Devolvemos la ruta del archivo
+    } catch (error) {
+      console.error('Error en el uploadFile:', error);
+      throw error;
+    }
+  }
+
+  // Método para obtener la URL pública de un archivo
+  getPublicUrl(filePath: string): string {
+    const { data } = this.supabase.storage
+      .from('fotos') // Nombre del bucket
+      .getPublicUrl(filePath); // Obtenemos la URL pública
+
+    return data?.publicUrl || ''; // Retorna la URL pública
+  }
+
+
+
 }
