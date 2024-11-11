@@ -70,6 +70,23 @@ export class ReportesPage implements OnInit {
     }
   }
 
+  updateUserLocation() {
+    this.getUserLocation().then(() => {
+      if (this.userPosition) {
+        // Actualizar el centro del mapa a la nueva ubicación
+        this.map.setCenter(this.userPosition);
+        // Mover el marcador a la nueva ubicación
+        const marker = new google.maps.Marker({
+          position: this.userPosition,
+          map: this.map,
+          title: 'Ubicación Actual',
+        });
+      }
+    }).catch(error => {
+      console.error('Error al actualizar la ubicación:', error);
+    });
+  }
+
   initializeMap() {
     const mapOptions = {
       center: this.userPosition || { lat: -34.397, lng: 150.644 }, // Ubicación actual o coordenadas por defecto
