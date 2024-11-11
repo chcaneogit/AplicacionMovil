@@ -7,7 +7,7 @@ import { AutenticacionService } from '../autenticacion/autenticacion.service';
 })
 export class InactivityService {
   private timeout: any;
-  private sessionDuration = 5 * 60 * 1000;
+  private sessionDuration = 20 * 60 * 1000;
 
   constructor(
     private router: Router,

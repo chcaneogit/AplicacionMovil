@@ -46,11 +46,10 @@ export class ReportesPage implements OnInit {
 
   async loadGoogleMaps() {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`; // Reemplaza con tu clave de API de Google Maps
-    script.async = true;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`; 
     script.defer = true;
     script.onload = async () => {
-      await this.getUserLocation(); // Obtén la ubicación del usuario
+      await this.getUserLocation(); 
       this.initializeMap();
     };
     document.body.appendChild(script);
@@ -66,7 +65,6 @@ export class ReportesPage implements OnInit {
       console.log("Ubicación del usuario:", this.userPosition);
     } catch (error) {
       console.error("Error al obtener la ubicación del usuario:", error);
-      this.userPosition = { lat: -34.397, lng: 150.644 }; // Coordenadas predeterminadas en caso de error
     }
   }
 
@@ -89,7 +87,6 @@ export class ReportesPage implements OnInit {
 
   initializeMap() {
     const mapOptions = {
-      center: this.userPosition || { lat: -34.397, lng: 150.644 }, // Ubicación actual o coordenadas por defecto
       zoom: 15, // Nivel de zoom cercano para la ubicación actual
     };
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
