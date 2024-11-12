@@ -13,7 +13,6 @@ const envFilePath = isAppflow ? null : '.env';
 const environmentFile = (process.env.ENV || 'development') === 'development' ? `environment.ts` : "environment.prod.ts";
 
 
-
 // Carga las variables de entorno desde el archivo local si no está en Appflow
 
 let envConfig = {};
@@ -30,11 +29,11 @@ if (!isAppflow && envFilePath) {
 
   production: true,
 
-  api_url: process.env.API_URL || '',
+  api_url: process.env.api_url || '',
 
-  apiKeySupabase: process.env.APIKEYSUPABASE || '',
+  apiKeySupabase: process.env.apiKeySupabase || '',
 
-  storage_url: process.env.STORAGE_URL || ''
+  storage_url: process.env.storage_url || ''
 
 
 
