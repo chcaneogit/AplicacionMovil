@@ -104,7 +104,7 @@ export class AutenticacionService {
     this.rutUsuarioSubject.next(null); // Limpiar el RUT al cerrar sesión
     this.nombreUsuarioSubject.next(null); // Limpiar el nombre al cerrar sesión
     this.usuarioActualSubject.next(null); // Limpiar el usuario actual
-    await Preferences.remove({ key: 'userData' }); // Limpiar los datos del usuario del almacenamiento
+    
 
     // Redirigir al usuario a la página de inicio de sesión
     this.router.navigate(['/login']);

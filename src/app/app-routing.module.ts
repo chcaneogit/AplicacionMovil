@@ -40,7 +40,7 @@ const routes: Routes = [
       import('./page/reportes/reportes.module').then(
         (m) => m.ReportesPageModule
       ),
-      canActivate: [isAuthenticatedGuard,isExpiredTimeGuard],
+      canActivate: [isExpiredTimeGuard],
   },
   {
     path: 'ver-reporte',
