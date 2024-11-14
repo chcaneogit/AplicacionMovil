@@ -29,8 +29,9 @@ export class ReportesPage implements OnInit {
     fecha_publicacion: '',
     desconocidoModelo: false,
     desconocidoPatente: false,
-    foto: '',
+    fotoUri: '',  // Guardará la URI de la foto tomada
   };
+
 
   constructor(
     private supabaseService: SupabaseService,
@@ -46,10 +47,10 @@ export class ReportesPage implements OnInit {
 
   async loadGoogleMaps() {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`; 
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`;
     script.defer = true;
     script.onload = async () => {
-      await this.getUserLocation(); 
+      await this.getUserLocation();
       this.initializeMap();
     };
     document.body.appendChild(script);
@@ -123,7 +124,31 @@ export class ReportesPage implements OnInit {
   async agregarReporte() {
     const today = new Date();
     this.nuevoReporte.fecha_publicacion = today.toISOString().split('T')[0];
-    if (!this.validarFormulario()) return;
+    console.log("Formulario enviado");
+
+    // Validaciones previas
+    if (!this.nuevoReporte.id_region || !this.nuevoReporte.id_tipo_vehiculo || !this.nuevoReporte.id_marca ||
+      (!this.nuevoReporte.modelo && !this.nuevoReporte.desconocidoModelo) ||
+      (!this.nuevoReporte.patente && !this.nuevoReporte.desconocidoPatente) ||
+      !this.nuevoReporte.color) {
+      await this.presentErrorAlert('Por favor, completa todos los campos requeridos.');
+      return;
+    }
+
+    // Validación de la patente
+    if (this.nuevoReporte.patente && !this.nuevoReporte.desconocidoPatente) {
+      const patenteLength = this.nuevoReporte.patente.length;
+      if (patenteLength < 5 || patenteLength > 6) {
+        await this.presentErrorAlert('Patente no corresponde');
+        return;
+      }
+    }
+
+    // Validación de foto: Si no hay foto, no permitir enviar el reporte
+    if (!this.nuevoReporte.fotoUri) {
+      await this.presentErrorAlert('Por favor, toma una foto antes de enviar el reporte.');
+      return;
+    }
 
     this.autenticacionService.obtenerRutUsuario().subscribe({
       next: (rutUsuario) => {
@@ -133,54 +158,47 @@ export class ReportesPage implements OnInit {
         }
 
         const reporteData = {
-          ...this.nuevoReporte,
+          id_region: this.nuevoReporte.id_region,
+          id_tipo_vehiculo: this.nuevoReporte.id_tipo_vehiculo,
+          color: this.nuevoReporte.color,
+          patente: this.nuevoReporte.desconocidoPatente ? 'Desconocido' : this.nuevoReporte.patente,
+          modelo: this.nuevoReporte.desconocidoModelo ? 'Desconocido' : this.nuevoReporte.modelo,
+          id_marca: this.nuevoReporte.id_marca,
+          fecha_publicacion: this.nuevoReporte.fecha_publicacion,
           rut_usuario: rutUsuario,
-          foto: '',
+          foto: '' // Se dejará vacío aquí, se llenará más tarde
         };
 
-        if (this.nuevoReporte.foto) {
-          this.subirFoto(this.nuevoReporte.foto).then((publicUrl) => {
-            reporteData.foto = publicUrl;
+        // Subir la foto si se ha capturado una
+        if (this.nuevoReporte.fotoUri) {
+          this.subirFoto(this.nuevoReporte.fotoUri).then((publicUrl) => {
+            reporteData.foto = publicUrl; // Incluir la URL de la foto subida
 
+            // Agregar el reporte con la URL de la foto
             this.supabaseService.addReporte(reporteData).subscribe({
-              next: async () => {
+              next: async (response) => {
+                console.log('Respuesta del servidor:', response);
                 this.cargarReportes();
                 this.resetNuevoReporte();
                 await this.presentSuccessAlert('Reporte agregado con éxito.');
               },
-              error: () => {
+              error: (err) => {
+                console.error('Error al agregar reporte:', err);
                 this.presentErrorAlert('Error al agregar el reporte. Intenta nuevamente.');
               }
             });
           });
         }
       },
-      error: () => {
+      error: (err) => {
+        console.error('Error al obtener el RUT del usuario:', err);
         this.presentErrorAlert('Error al obtener el RUT del usuario.');
       }
     });
+
+    console.log('Reporte agregado:', this.nuevoReporte);
   }
 
-  validarFormulario(): boolean {
-    const { id_region, id_tipo_vehiculo, id_marca, modelo, patente, color, foto, desconocidoModelo, desconocidoPatente } = this.nuevoReporte;
-
-    if (!id_region || !id_tipo_vehiculo || !id_marca || (!modelo && !desconocidoModelo) || (!patente && !desconocidoPatente) || !color) {
-      this.presentErrorAlert('Por favor, completa todos los campos requeridos.');
-      return false;
-    }
-
-    if (patente && !desconocidoPatente && (patente.length < 5 || patente.length > 6)) {
-      this.presentErrorAlert('Patente no corresponde');
-      return false;
-    }
-
-    if (!foto) {
-      this.presentErrorAlert('Por favor, toma una foto antes de enviar el reporte.');
-      return false;
-    }
-
-    return true;
-  }
 
   async presentErrorAlert(message: string) {
     const alert = await this.alertController.create({
@@ -215,7 +233,7 @@ export class ReportesPage implements OnInit {
       fecha_publicacion: '',
       desconocidoModelo: false,
       desconocidoPatente: false,
-      foto: '',
+      fotoUri: '',
     };
   }
 
@@ -224,22 +242,34 @@ export class ReportesPage implements OnInit {
       const image = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
+        resultType: CameraResultType.Uri,  // Usar Uri para obtener una referencia de la foto
+        source: CameraSource.Camera
       });
-      this.nuevoReporte.foto = image.webPath!;
+
+      // Guardar la URI de la imagen capturada
+      this.nuevoReporte.fotoUri = image.webPath!;
+      console.log('Foto tomada correctamente:', this.nuevoReporte.fotoUri);
     } catch (error) {
       console.error('Error al tomar la foto:', error);
     }
   }
 
+
   async subirFoto(fotoUri: string) {
     try {
       const response = await fetch(fotoUri);
       const blob = await response.blob();
-      const fileName = `${new Date().getTime()}.jpg`;
+
+      // Generar un nombre único para la imagen en el bucket (por ejemplo, con un timestamp)
+      const fileName = `${new Date().getTime()}.jpg`; // Nombre único basado en el timestamp
+
+      // Subir la imagen al bucket de Supabase
       const filePath = await this.supabaseService.uploadFile(fileName, blob);
-      return this.supabaseService.getPublicUrl(filePath);
+
+      // Obtener la URL pública de la imagen
+      const publicUrl = this.supabaseService.getPublicUrl(filePath);
+      console.log('Foto subida correctamente:', publicUrl);
+      return publicUrl;
     } catch (error) {
       console.error('Error al subir la foto:', error);
       throw error;

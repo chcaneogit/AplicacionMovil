@@ -111,8 +111,8 @@
         <ion-button (click)="tomarFoto()">Insertar Foto</ion-button>
       </ion-item>
 
-      <ion-item *ngIf="nuevoReporte.foto">
-        <img [src]="nuevoReporte.foto" alt="Foto del vehículo" style="width: 100%; height: auto; margin-top: 10px;"/>
+      <ion-item *ngIf="nuevoReporte.fotoUri">
+        <img [src]="nuevoReporte.fotoUri" alt="Foto del vehículo" style="width: 100%; height: auto; margin-top: 10px;"/>
       </ion-item>
 
 
