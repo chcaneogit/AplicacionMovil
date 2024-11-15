@@ -10,8 +10,7 @@
 <ion-content>
   <div class="container-1" *ngFor="let reporte of reportes">
     <h4>Publicado el {{reporte.fecha_publicacion}}</h4>
-    <img src="https://blob.diariodelyaqui.mx/images/2024/07/30/de-cuanto-es-la-multa-por-dejar-un-auto-abandonado-en-la-calle-8e02a12f-focus-0-0-784-440.jpg" alt="Placeholder Image" class="responsive-img">
-
+    <img *ngIf="reporte.foto" [src]="reporte.foto" alt="Foto del reporte" class="responsive-img">
     <ion-list class="home">
       <ion-item>
         <ion-label>

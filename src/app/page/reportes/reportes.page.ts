@@ -18,6 +18,7 @@ export class ReportesPage implements OnInit {
   reportes: any[] = [];
   map: any;
   userPosition: { lat: number; lng: number } | null = null;
+  marker: any;
 
   nuevoReporte = {
     id_region: '',
@@ -72,10 +73,16 @@ export class ReportesPage implements OnInit {
   updateUserLocation() {
     this.getUserLocation().then(() => {
       if (this.userPosition) {
-        // Actualizar el centro del mapa a la nueva ubicación
+        // Centrar el mapa en la nueva ubicación
         this.map.setCenter(this.userPosition);
-        // Mover el marcador a la nueva ubicación
-        const marker = new google.maps.Marker({
+
+        // Elimina el marcador anterior si existe
+        if (this.marker) {
+          this.marker.setMap(null);
+        }
+
+        // Agrega el nuevo marcador en la ubicación actualizada
+        this.marker = new google.maps.Marker({
           position: this.userPosition,
           map: this.map,
           title: 'Ubicación Actual',
@@ -85,6 +92,7 @@ export class ReportesPage implements OnInit {
       console.error('Error al actualizar la ubicación:', error);
     });
   }
+
 
   initializeMap() {
     const mapOptions = {
@@ -150,6 +158,12 @@ export class ReportesPage implements OnInit {
       return;
     }
 
+    // Validar que las coordenadas del usuario estén disponibles
+    if (!this.userPosition) {
+      await this.presentErrorAlert('No se pudo obtener la ubicación. Por favor, intenta nuevamente.');
+      return;
+    }
+
     this.autenticacionService.obtenerRutUsuario().subscribe({
       next: (rutUsuario) => {
         if (!rutUsuario) {
@@ -166,7 +180,8 @@ export class ReportesPage implements OnInit {
           id_marca: this.nuevoReporte.id_marca,
           fecha_publicacion: this.nuevoReporte.fecha_publicacion,
           rut_usuario: rutUsuario,
-          foto: '' // Se dejará vacío aquí, se llenará más tarde
+          foto: '',
+          ubicacion: `${this.userPosition?.lat},${this.userPosition?.lng}` // Almacenar las coordenadas en el campo "ubicacion"
         };
 
         // Subir la foto si se ha capturado una
@@ -174,7 +189,7 @@ export class ReportesPage implements OnInit {
           this.subirFoto(this.nuevoReporte.fotoUri).then((publicUrl) => {
             reporteData.foto = publicUrl; // Incluir la URL de la foto subida
 
-            // Agregar el reporte con la URL de la foto
+            // Agregar el reporte con la URL de la foto y la ubicación
             this.supabaseService.addReporte(reporteData).subscribe({
               next: async (response) => {
                 console.log('Respuesta del servidor:', response);
@@ -198,6 +213,7 @@ export class ReportesPage implements OnInit {
 
     console.log('Reporte agregado:', this.nuevoReporte);
   }
+
 
 
   async presentErrorAlert(message: string) {
