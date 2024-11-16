@@ -31,6 +31,7 @@ export class ReportesPage implements OnInit {
     desconocidoModelo: false,
     desconocidoPatente: false,
     fotoUri: '',  // Guardará la URI de la foto tomada
+    ubicacion:''
   };
 
 
@@ -50,25 +51,46 @@ export class ReportesPage implements OnInit {
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`;
     script.defer = true;
+
     script.onload = async () => {
-      await this.getUserLocation();
-      this.initializeMap();
+      try {
+        // Obtener la ubicación del usuario antes de inicializar el mapa
+        await this.getUserLocation();
+
+        // Inicializar el mapa con la ubicación del usuario
+        this.initializeMap();
+      } catch (error) {
+        console.error('Error durante la carga de Google Maps o la obtención de la ubicación:', error);
+        this.presentErrorAlert('No se pudo cargar el mapa. Verifica tus configuraciones de GPS.');
+      }
     };
+
     document.body.appendChild(script);
   }
 
+
   async getUserLocation() {
     try {
-      const position = await Geolocation.getCurrentPosition();
+      const position = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      });
+
       this.userPosition = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       };
-      console.log("Ubicación del usuario:", this.userPosition);
+
+      console.log('Ubicación del usuario:', this.userPosition);
     } catch (error) {
-      console.error("Error al obtener la ubicación del usuario:", error);
+      console.error('Error al obtener la ubicación del usuario:', error);
+      this.userPosition = null; // Manejar la falta de ubicación
+      throw error;
     }
   }
+
+
 
   updateUserLocation() {
     this.getUserLocation().then(() => {
@@ -96,19 +118,24 @@ export class ReportesPage implements OnInit {
 
   initializeMap() {
     const mapOptions = {
+      center: this.userPosition || { lat: -33.4489, lng: -70.6693 }, // Default: Santiago, Chile
       zoom: 15, // Nivel de zoom cercano para la ubicación actual
     };
+
     this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    // Agregar marcador en la ubicación actual del usuario
+    // Agregar marcador en la ubicación actual del usuario si está disponible
     if (this.userPosition) {
-      new google.maps.Marker({
+      this.marker = new google.maps.Marker({
         position: this.userPosition,
         map: this.map,
-        title: "Ubicación Actual",
+        title: 'Ubicación Actual',
       });
+    } else {
+      console.log('No se pudo inicializar el marcador porque no se obtuvo la ubicación del usuario.');
     }
   }
+
 
   cargarReportes() {
     this.supabaseService.getReportes().subscribe({
@@ -250,6 +277,7 @@ export class ReportesPage implements OnInit {
       desconocidoModelo: false,
       desconocidoPatente: false,
       fotoUri: '',
+      ubicacion:''
     };
   }
 

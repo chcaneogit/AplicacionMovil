@@ -34,19 +34,25 @@ export class HomePage implements OnInit {
   }
 
 
-  async verificarReportes() {
+  async verificarReportes(reporte: any) {
     if (!this.autenticacionService.estaAutenticado()) {
       const alert = await this.alertController.create({
         header: 'Acceso Denegado',
         message: 'Debe iniciar sesión para poder ver la ubicación.',
         buttons: ['OK']
       });
-
       await alert.present();
     } else {
-
-      this.router.navigate(['/ver-ubicacion']);
+      // Redirige a la página de ubicación y pasa el reporte como parámetro
+      this.router.navigate(['/ver-ubicacion'], {
+        queryParams: {
+          ubicacion: reporte.ubicacion,
+          modelo: reporte.modelo,
+          patente: reporte.patente
+        }
+      });
     }
   }
+
 
 }
