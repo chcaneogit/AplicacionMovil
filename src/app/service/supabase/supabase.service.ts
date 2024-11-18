@@ -50,7 +50,9 @@ export class SupabaseService {
 
   // Métodos específicos para reportes
   getReportes(): Observable<HttpResponse<any>> {
-    const params = new HttpParams().set('select', '*, region(*), tipo_vehiculo(*), marca(*)');
+    const params = new HttpParams()
+      .set('select', '*, region(*), tipo_vehiculo(*), marca(*)')
+      .set('order', 'foto.desc');
     return this.get<any>('reporte', params).pipe(
       tap((response) => {
         this.reportesSubject.next(response.body); // Actualiza el BehaviorSubject
@@ -68,7 +70,8 @@ export class SupabaseService {
   getReportesByUsuario(rutUsuario: string): Observable<HttpResponse<any>> {
     const params = new HttpParams()
       .set('rut_usuario', `eq.${rutUsuario}`)
-      .set('select', '*, region(*), tipo_vehiculo(*), marca(*)'); // Incluir las relaciones
+      .set('select', '*, region(*), tipo_vehiculo(*), marca(*)') // Incluir las relaciones
+      .set('order', 'foto.desc');
 
     return this.get<any>('reporte', params).pipe(
       catchError(this.handleError)

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MapsService } from 'src/app/service/maps/maps.service';
 
 declare var google: any;
 
@@ -12,25 +13,29 @@ export class VerUbicacionPage implements OnInit {
   ubicacion: string | null = null;
   map: any;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private mapsService: MapsService) {}
 
   ngOnInit() {
-    // Obtener los parámetros de la URL
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.ubicacion = params['ubicacion'];
-      this.loadGoogleMaps();
+      if (this.ubicacion) {
+        this.mapsService
+          .loadGoogleMaps()
+          .then(() => this.initializeMap())
+          .catch((error) => console.error('Error al cargar Google Maps:', error));
+      } else {
+        console.error('Ubicación no encontrada');
+      }
     });
   }
 
-  loadGoogleMaps() {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`;
-    script.defer = true;
-    script.onload = () => this.initializeMap();
-    document.body.appendChild(script);
-  }
-
   initializeMap() {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+      console.error('Contenedor del mapa no encontrado');
+      return;
+    }
+
     if (this.ubicacion) {
       const [lat, lng] = this.ubicacion.split(',').map(Number);
 
@@ -39,7 +44,14 @@ export class VerUbicacionPage implements OnInit {
         zoom: 15,
       };
 
-      this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+      if (this.map) {
+        // Si el mapa ya existe, redibuja y centra
+        google.maps.event.trigger(this.map, 'resize');
+        this.map.setCenter(mapOptions.center);
+      } else {
+        // Inicializa el mapa solo si no existe
+        this.map = new google.maps.Map(mapElement, mapOptions);
+      }
 
       new google.maps.Marker({
         position: { lat, lng },
@@ -47,4 +59,5 @@ export class VerUbicacionPage implements OnInit {
       });
     }
   }
+
 }

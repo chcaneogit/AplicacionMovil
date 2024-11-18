@@ -8,12 +8,20 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div id="map" style="width: 100%; height: 400px;"></div>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
 
-  <!-- Botón para actualizar la ubicación del GPS -->
+      refreshingSpinner="bubbles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-button expand="full" (click)="updateUserLocation()">
     Actualizar Ubicación
   </ion-button>
+  <div id="map" style="width: 100%; height: 400px;"></div>
+
+  <!-- Botón para actualizar la ubicación del GPS -->
+
 
   <div class="form-container">
     <h2>Agregar Reporte</h2>

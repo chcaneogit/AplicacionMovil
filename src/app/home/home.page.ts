@@ -20,6 +20,10 @@ export class HomePage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.cargarReportes();
+  }
+
+  cargarReportes() {
     this.supabaseService.getReportes().subscribe({
       next: (response) => {
         if (response.body) {
@@ -29,30 +33,47 @@ export class HomePage implements OnInit {
       },
       error: (err) => {
         console.error('Error al obtener reportes:', err);
-      }
+      },
     });
   }
 
+  doRefresh(event: any) {
+    console.log('Actualizando reportes...');
+
+    // Llamar al método que obtiene los reportes
+    this.supabaseService.getReportes().subscribe({
+      next: (response) => {
+        if (response.body) {
+          this.reportes = response.body;
+          console.log('Reportes actualizados:', this.reportes);
+        }
+        // Finalizar el refresher
+        event.target.complete();
+      },
+      error: (err) => {
+        console.error('Error al refrescar reportes:', err);
+        // Finalizar el refresher incluso si hay un error
+        event.target.complete();
+      }
+    });
+  }
 
   async verificarReportes(reporte: any) {
     if (!this.autenticacionService.estaAutenticado()) {
       const alert = await this.alertController.create({
         header: 'Acceso Denegado',
         message: 'Debe iniciar sesión para poder ver la ubicación.',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
       await alert.present();
     } else {
-      // Redirige a la página de ubicación y pasa el reporte como parámetro
       this.router.navigate(['/ver-ubicacion'], {
         queryParams: {
           ubicacion: reporte.ubicacion,
           modelo: reporte.modelo,
-          patente: reporte.patente
-        }
+          patente: reporte.patente,
+        },
       });
     }
   }
-
-
 }

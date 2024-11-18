@@ -6,6 +6,7 @@ import { AutenticacionService } from '../../service/autenticacion/autenticacion.
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
+import { MapsService } from 'src/app/service/maps/maps.service';
 
 declare var google: any;
 
@@ -39,33 +40,53 @@ export class ReportesPage implements OnInit {
     private supabaseService: SupabaseService,
     private alertController: AlertController,
     private autenticacionService: AutenticacionService,
-    private router: Router
+    private router: Router,
+    private mapsService: MapsService
   ) {}
 
   ngOnInit() {
     this.cargarReportes();
-    this.loadGoogleMaps();
+    this.getUserLocation().then(() => {
+      this.mapsService.loadGoogleMaps()
+        .then(() => this.initializeMap())
+        .catch((error) => console.error('Error al cargar Google Maps:', error));
+    }).catch(error => {
+      console.error('Error al obtener la ubicación:', error);
+    });
   }
 
-  async loadGoogleMaps() {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDRsFGmvUnCW63BCMGfwpCfqBIswI_KWUE`;
-    script.defer = true;
+  initializeMap() {
+    const mapElement = document.getElementById('map');
+    if (!mapElement) {
+      console.error('Contenedor del mapa no encontrado');
+      return;
+    }
 
-    script.onload = async () => {
-      try {
-        // Obtener la ubicación del usuario antes de inicializar el mapa
-        await this.getUserLocation();
-
-        // Inicializar el mapa con la ubicación del usuario
-        this.initializeMap();
-      } catch (error) {
-        console.error('Error durante la carga de Google Maps o la obtención de la ubicación:', error);
-        this.presentErrorAlert('No se pudo cargar el mapa. Verifica tus configuraciones de GPS.');
-      }
+    const mapOptions = {
+      center: this.userPosition || { lat: -33.4489, lng: -70.6693 },
+      zoom: 15,
     };
 
-    document.body.appendChild(script);
+    if (this.map) {
+      // Si el mapa ya existe, fuerza un redibujado.
+      google.maps.event.trigger(this.map, 'resize');
+      this.map.setCenter(mapOptions.center);
+    } else {
+      // Inicializa el mapa solo si no existe.
+      this.map = new google.maps.Map(mapElement, mapOptions);
+    }
+
+    if (this.userPosition) {
+      if (this.marker) {
+        this.marker.setMap(null); // Elimina el marcador anterior si existe
+      }
+
+      this.marker = new google.maps.Marker({
+        position: this.userPosition,
+        map: this.map,
+        title: 'Ubicación Actual',
+      });
+    }
   }
 
 
@@ -90,8 +111,6 @@ export class ReportesPage implements OnInit {
     }
   }
 
-
-
   updateUserLocation() {
     this.getUserLocation().then(() => {
       if (this.userPosition) {
@@ -114,28 +133,6 @@ export class ReportesPage implements OnInit {
       console.error('Error al actualizar la ubicación:', error);
     });
   }
-
-
-  initializeMap() {
-    const mapOptions = {
-      center: this.userPosition || { lat: -33.4489, lng: -70.6693 }, // Default: Santiago, Chile
-      zoom: 15, // Nivel de zoom cercano para la ubicación actual
-    };
-
-    this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    // Agregar marcador en la ubicación actual del usuario si está disponible
-    if (this.userPosition) {
-      this.marker = new google.maps.Marker({
-        position: this.userPosition,
-        map: this.map,
-        title: 'Ubicación Actual',
-      });
-    } else {
-      console.log('No se pudo inicializar el marcador porque no se obtuvo la ubicación del usuario.');
-    }
-  }
-
 
   cargarReportes() {
     this.supabaseService.getReportes().subscribe({
@@ -319,4 +316,22 @@ export class ReportesPage implements OnInit {
       throw error;
     }
   }
+
+  doRefresh(event: any) {
+    console.log('Pull-to-Refresh activado');
+
+    // Recargar reportes
+    this.cargarReportes();
+
+    // Opcional: Recargar mapa y ubicación
+    this.updateUserLocation();
+
+    // Finalizar el refresco tras unos segundos
+    setTimeout(() => {
+      console.log('Refresco completado');
+      event.target.complete();
+    }, 2000);
+  }
+
+
 }

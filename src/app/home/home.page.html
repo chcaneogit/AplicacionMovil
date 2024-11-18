@@ -8,8 +8,15 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+
+      refreshingSpinner="bubbles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div class="container-1" *ngFor="let reporte of reportes">
-    <h4>Publicado el {{reporte.fecha_publicacion}}</h4>
+    <h4>Publicado el {{ reporte.fecha_publicacion }}</h4>
     <img *ngIf="reporte.foto" [src]="reporte.foto" alt="Foto del reporte" class="responsive-img">
     <ion-list class="home">
       <ion-item>
