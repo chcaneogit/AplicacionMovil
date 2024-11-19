@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
           const usuarioData = usuario[0];
           if (usuarioData && this.validatePassword(password, usuarioData.password)) { // Verificar la contraseña
             console.info("Usuario Existe");
-            const userData = { expiration: Date.now() + 1 * 60 * 1000 };
+            const userData = { expiration: Date.now() + 20 * 60 * 1000 };
             const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(userData), environment.apiKeySupabase).toString();
             await Preferences.set({
               key: 'userData',

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AutenticacionService } from './service/autenticacion/autenticacion.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { InactivityService } from './service/inactivity/inactivity.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private _authService: AutenticacionService,
-    private inactivityService: InactivityService,
+
     private router: Router,
   ) {}
 
