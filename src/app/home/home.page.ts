@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from 'src/app/service/supabase/supabase.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AutenticacionService } from '../service/autenticacion/autenticacion.service';
 
@@ -16,14 +16,21 @@ export class HomePage implements OnInit {
     private supabaseService: SupabaseService,
     private autenticacionService: AutenticacionService,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit() {
     this.cargarReportes();
   }
 
-  cargarReportes() {
+  async cargarReportes() {
+    const loading = await this.loadingController.create({
+      message: 'Cargando reportes...',
+      spinner: 'crescent', // Estilo del cargador
+    });
+    await loading.present(); // Muestra el cargador
+
     this.supabaseService.getReportes().subscribe({
       next: (response) => {
         if (response.body) {
@@ -34,28 +41,20 @@ export class HomePage implements OnInit {
       error: (err) => {
         console.error('Error al obtener reportes:', err);
       },
+      complete: () => {
+        loading.dismiss(); // Oculta el cargador cuando los reportes se cargan
+      },
     });
   }
 
   doRefresh(event: any) {
     console.log('Actualizando reportes...');
 
-    // Llamar al método que obtiene los reportes
-    this.supabaseService.getReportes().subscribe({
-      next: (response) => {
-        if (response.body) {
-          this.reportes = response.body;
-          console.log('Reportes actualizados:', this.reportes);
-        }
-        // Finalizar el refresher
-        event.target.complete();
-      },
-      error: (err) => {
-        console.error('Error al refrescar reportes:', err);
-        // Finalizar el refresher incluso si hay un error
-        event.target.complete();
-      }
-    });
+    // Muestra el cargador mientras se actualizan los reportes
+    this.cargarReportes();
+
+    // Finalizar el refresher
+    event.target.complete();
   }
 
   async verificarReportes(reporte: any) {

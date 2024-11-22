@@ -79,7 +79,7 @@ export class VerReportePage implements OnInit {
                 await successAlert.present();
 
                 // Redirigir después de la eliminación
-                this.router.navigate(['home']);
+                this.router.navigate(['ver-reporte']);
               },
               error: (err) => {
                 console.error('Error al eliminar el reporte:', err);
@@ -91,5 +91,15 @@ export class VerReportePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  doRefresh(event: any) {
+    console.log('Actualizando reportes...');
+
+    // Muestra el cargador mientras se actualizan los reportes
+    this.cargarReportes();
+
+    // Finalizar el refresher
+    event.target.complete();
   }
 }

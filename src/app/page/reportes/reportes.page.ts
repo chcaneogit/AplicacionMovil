@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from '../../service/supabase/supabase.service';
 import { HttpResponse } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
 import { AutenticacionService } from '../../service/autenticacion/autenticacion.service';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Geolocation } from '@capacitor/geolocation';
 import { MapsService } from 'src/app/service/maps/maps.service';
+import { AlertController, LoadingController } from '@ionic/angular';
+
 
 declare var google: any;
 
@@ -41,7 +42,9 @@ export class ReportesPage implements OnInit {
     private alertController: AlertController,
     private autenticacionService: AutenticacionService,
     private router: Router,
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private loadingController: LoadingController
+
   ) {}
 
   ngOnInit() {
@@ -236,9 +239,8 @@ export class ReportesPage implements OnInit {
     });
 
     console.log('Reporte agregado:', this.nuevoReporte);
+    this.router.navigate(['ver-reporte']);
   }
-
-
 
   async presentErrorAlert(message: string) {
     const alert = await this.alertController.create({
@@ -281,7 +283,7 @@ export class ReportesPage implements OnInit {
   async tomarFoto() {
     try {
       const image = await Camera.getPhoto({
-        quality: 90,
+        quality: 70,
         allowEditing: false,
         resultType: CameraResultType.Uri,  // Usar Uri para obtener una referencia de la foto
         source: CameraSource.Camera
@@ -297,12 +299,20 @@ export class ReportesPage implements OnInit {
 
 
   async subirFoto(fotoUri: string) {
+    const loading = await this.loadingController.create({
+      message: 'Subiendo foto...',
+      spinner: 'crescent',
+      backdropDismiss: false,
+    });
+
+    await loading.present(); // Mostrar el spinner
+
     try {
       const response = await fetch(fotoUri);
       const blob = await response.blob();
 
-      // Generar un nombre único para la imagen en el bucket (por ejemplo, con un timestamp)
-      const fileName = `${new Date().getTime()}.jpg`; // Nombre único basado en el timestamp
+      // Generar un nombre único para la imagen en el bucket
+      const fileName = `${new Date().getTime()}.jpg`;
 
       // Subir la imagen al bucket de Supabase
       const filePath = await this.supabaseService.uploadFile(fileName, blob);
@@ -310,12 +320,16 @@ export class ReportesPage implements OnInit {
       // Obtener la URL pública de la imagen
       const publicUrl = this.supabaseService.getPublicUrl(filePath);
       console.log('Foto subida correctamente:', publicUrl);
+
+      await loading.dismiss(); // Ocultar el spinner
       return publicUrl;
     } catch (error) {
       console.error('Error al subir la foto:', error);
+      await loading.dismiss(); // Ocultar el spinner incluso si hay un error
       throw error;
     }
   }
+
 
   doRefresh(event: any) {
     console.log('Pull-to-Refresh activado');
